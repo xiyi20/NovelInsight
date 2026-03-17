@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>表格数据 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" th:href="@{/assets/demo/demo.css}"/>
+</head>
+
+<body class="">
+<div class="wrapper">
+    <!-- 侧边栏（与首页相同） -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
+        <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+    </div>
+
+    <div class="main-panel">
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button class="navbar-toggler" type="button">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:void(0)">表格数据</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="nav-link">欢迎，<span th:text="${#authentication.name}">用户</span></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/app/logout}">
+                                <i class="tim-icons icon-button-power"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 内容区域 -->
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">小说数据表格</h4>
+                            <p class="card-category">显示所有小说数据</p>
+
+                            <!-- 过滤和排序表单 -->
+                            <form class="form-inline mt-3" method="get" th:action="@{/app/tableData}">
+                                <input name="page" type="hidden" value="1"/>
+
+                                <div class="form-group mr-2">
+                                    <input class="form-control" name="authorFilter"
+                                           placeholder="作者" th:value="${authorFilter}"
+                                           type="text">
+                                </div>
+
+                                <div class="form-group mr-2">
+                                    <input class="form-control" name="novelFilter"
+                                           placeholder="小说名" th:value="${novelFilter}"
+                                           type="text">
+                                </div>
+
+                                <div class="form-group mr-2">
+                                    <select class="form-control" name="typeFilter">
+                                        <option th:selected="${typeFilter == '都市言情'}" value="都市言情">都市言情</option>
+                                        <option th:selected="${typeFilter == '军事历史'}" value="军事历史">军事历史</option>
+                                        <option th:selected="${typeFilter == '青春校园'}" value="青春校园">青春校园</option>
+                                        <option th:selected="${typeFilter == '玄幻奇幻'}" value="玄幻奇幻">玄幻奇幻</option>
+                                        <option th:selected="${typeFilter == '同人小说'}" value="同人小说">同人小说</option>
+                                        <option th:selected="${typeFilter == '科幻网游'}" value="科幻网游">科幻网游</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mr-2">
+                                    <select class="form-control" name="sortField">
+                                        <option th:selected="${sortField == 'allRead'}" value="allRead">阅读量</option>
+                                        <option th:selected="${sortField == 'allFlower'}" value="allFlower">收藏量</option>
+                                        <option th:selected="${sortField == 'reward'}" value="reward">打赏</option>
+                                        <option th:selected="${sortField == 'wordNum'}" value="wordNum">字数</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mr-2">
+                                    <select class="form-control" name="sortOrder">
+                                        <option th:selected="${sortOrder == 'DESC'}" value="DESC">降序</option>
+                                        <option th:selected="${sortOrder == 'ASC'}" value="ASC">升序</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn btn-sm btn-primary mr-2" type="submit">筛选</button>
+                                <a class="btn btn-sm btn-secondary" th:href="@{/app/tableData(page=1)}">重置</a>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead class="text-primary">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>类型</th>
+                                        <th>小说名</th>
+                                        <th>作者</th>
+                                        <th>字数</th>
+                                        <th>阅读量</th>
+                                        <th>收藏量</th>
+                                        <th>打赏</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="novel, iterStat : ${articles_page.content}">
+                                        <td th:text="${novel[21]}">1</td>
+                                        <td th:text="${novel[0]}">玄幻</td>
+                                        <td th:text="${novel[1]}">小说名</td>
+                                        <td th:text="${novel[3]}">作者</td>
+                                        <td th:text="${novel[12]}">100000</td>
+                                        <td th:text="${novel[10]}">10000</td>
+                                        <td th:text="${novel[11]}">5000</td>
+                                        <td th:text="${novel[14]}">1000</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary"
+                                               th:href="@{/app/addHistory/{novelId}(novelId=${novel[21]})}">收藏</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 分页控件 - 简化版，只显示导航和当前页附近页码 -->
+                            <div class="row" th:if="${articles_page.totalPages > 1}">
+                                <div class="col-md-12">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- 定义分页参数 -->
+                                            <th:block th:with="
+                            currentPageNum=${articles_page.number + 1},
+                            totalPages=${articles_page.totalPages},
+                            typeParam=${typeFilter != null ? typeFilter : ''},
+                            authorParam=${authorFilter != null ? authorFilter : ''},
+                            novelParam=${novelFilter != null ? novelFilter : ''},
+                            sortFieldParam=${sortField != null ? sortField : 'allRead'},
+                            sortOrderParam=${sortOrder != null ? sortOrder : 'DESC'}">
+
+                                                <!-- 上一页 -->
+                                                <li class="page-item"
+                                                    th:classappend="${articles_page.number == 0} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/app/tableData(page=${articles_page.number},
+                                         typeFilter=${typeParam},
+                                         authorFilter=${authorParam},
+                                         novelFilter=${novelParam},
+                                         sortField=${sortFieldParam},
+                                         sortOrder=${sortOrderParam})}">上一页</a>
+                                                </li>
+
+                                                <!-- 显示有限页码：当前页前后各2页，最多显示5个页码 -->
+                                                <th:block th:with="
+                              startPage=${currentPageNum - 2 > 1 ? currentPageNum - 2 : 1},
+                              endPage=${currentPageNum + 2 < totalPages ? currentPageNum + 2 : totalPages}">
+
+                                                    <!-- 首页（如果当前页不在前3页） -->
+                                                    <li class="page-item" th:if="${currentPageNum > 3}">
+                                                        <a class="page-link"
+                                                           th:href="@{/app/tableData(page=1,
+                                           typeFilter=${typeParam},
+                                           authorFilter=${authorParam},
+                                           novelFilter=${novelParam},
+                                           sortField=${sortFieldParam},
+                                           sortOrder=${sortOrderParam})}">1</a>
+                                                    </li>
+                                                    <li class="page-item disabled" th:if="${currentPageNum > 4}">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+
+                                                    <!-- 当前页附近页码 -->
+                                                    <li class="page-item"
+                                                        th:classappend="${currentPageNum == page} ? 'active'"
+                                                        th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                                                        <a class="page-link"
+                                                           th:href="@{/app/tableData(page=${page},
+                                           typeFilter=${typeParam},
+                                           authorFilter=${authorParam},
+                                           novelFilter=${novelParam},
+                                           sortField=${sortFieldParam},
+                                           sortOrder=${sortOrderParam})}"
+                                                           th:text="${page}"></a>
+                                                    </li>
+
+                                                    <!-- 尾页（如果当前页不在后3页） -->
+                                                    <li class="page-item disabled"
+                                                        th:if="${currentPageNum < totalPages - 3}">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                    <li class="page-item" th:if="${currentPageNum < totalPages - 2}">
+                                                        <a class="page-link"
+                                                           th:href="@{/app/tableData(page=${totalPages},
+                                           typeFilter=${typeParam},
+                                           authorFilter=${authorParam},
+                                           novelFilter=${novelParam},
+                                           sortField=${sortFieldParam},
+                                           sortOrder=${sortOrderParam})}"
+                                                           th:text="${totalPages}"></a>
+                                                    </li>
+                                                </th:block>
+
+                                                <!-- 下一页 -->
+                                                <li class="page-item"
+                                                    th:classappend="${articles_page.number + 1 == articles_page.totalPages} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/app/tableData(page=${articles_page.number + 2},
+                                         typeFilter=${typeParam},
+                                         authorFilter=${authorParam},
+                                         novelFilter=${novelParam},
+                                         sortField=${sortFieldParam},
+                                         sortOrder=${sortOrderParam})}">下一页</a>
+                                                </li>
+                                            </th:block>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="text-muted">
+                                        显示第 <span th:text="${articles_page.number * articles_page.size + 1}">1</span>
+                                        到
+                                        <span th:text="${(articles_page.number * articles_page.size) + articles_page.numberOfElements}">10</span>
+                                        条，
+                                        共 <span th:text="${articles_page.totalElements}">100</span> 条记录
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+</body>
+</html>

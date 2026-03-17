@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+  <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+  <title>收藏数据 - 小说数据分析可视化系统</title>
+  <!-- CSS Files -->
+  <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}" />
+  <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link rel="stylesheet" th:href="@{/assets/demo/demo.css}" />
+</head>
+
+<body class="">
+  <div class="wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-panel">
+      <!-- 导航栏 -->
+      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">收藏数据</a>
+          </div>
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/app/logout}">
+                  <i class="tim-icons icon-button-power"></i> 退出
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 内容区域 -->
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">我的收藏</h4>
+                <p class="card-category">您收藏的小说列表</p>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped" th:if="${not #lists.isEmpty(collectList)}">
+                    <thead class="text-primary">
+                      <tr>
+                        <th>ID</th>
+                        <th>类型</th>
+                        <th>小说名</th>
+                        <th>作者</th>
+                        <th>字数</th>
+                        <th>阅读量</th>
+                        <th>收藏量</th>
+                        <th>打赏</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="novel, iterStat : ${collectList}">
+                        <td th:text="${novel[21]}">1</td>
+                        <td th:text="${novel[0]}">玄幻</td>
+                        <td th:text="${novel[1]}">小说名</td>
+                        <td th:text="${novel[3]}">作者</td>
+                        <td th:text="${novel[12]}">100000</td>
+                        <td th:text="${novel[10]}">10000</td>
+                        <td th:text="${novel[11]}">5000</td>
+                        <td th:text="${novel[14]}">1000</td>
+                        <td>
+                          <a class="btn btn-sm btn-danger"
+                             onclick="return confirm('确定要删除这个收藏吗？')"
+                             th:href="@{/app/delHistory/{novelId}(novelId=${novel[21]})}">删除</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(collectList)}">
+                    <h4 class="alert-heading">暂无收藏</h4>
+                    <p>您还没有收藏任何小说。请前往 <a th:href="@{/app/tableData}">表格数据</a> 页面添加收藏。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core JS Files -->
+  <script th:src="@{/assets/js/core/jquery.min.js}"></script>
+  <script th:src="@{/assets/js/core/popper.min.js}"></script>
+  <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+  <!-- Chart JS -->
+  <script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+  <!-- Notifications Plugin -->
+  <script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+  <!-- Control Center for Black Dashboard -->
+  <script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
+  <script th:src="@{/assets/demo/demo.js}"></script>
+</body>
+</html>

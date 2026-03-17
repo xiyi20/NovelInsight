@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <!-- 侧边栏片段 -->
+  <div class="sidebar" th:fragment="sidebar">
+    <div class="sidebar-wrapper">
+      <div class="logo">
+        <a class="simple-text logo-mini" href="javascript:void(0)"></a>
+        <a class="simple-text logo-normal" href="javascript:void(0)">小说分析系统</a>
+      </div>
+      <ul class="nav">
+        <li th:classappend="${currentPage == 'index'} ? 'active'">
+          <a th:href="@{/app/index}">
+            <i class="tim-icons icon-book-bookmark"></i>
+            <p>首页</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'tableData'} ? 'active'">
+          <a th:href="@{/app/tableData}">
+            <i class="tim-icons icon-bullet-list-67"></i>
+            <p>表格数据</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'collectData'} ? 'active'">
+          <a th:href="@{/app/collectData}">
+            <i class="tim-icons icon-heart-2"></i>
+            <p>收藏数据</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'typeChart'} ? 'active'">
+          <a th:href="@{/app/typeChart}">
+            <i class="tim-icons icon-chart-pie-36"></i>
+            <p>类型图表</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'infoChart'} ? 'active'">
+          <a th:href="@{/app/infoChart}">
+            <i class="tim-icons icon-chart-bar-32"></i>
+            <p>信息图表</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'timeChart'} ? 'active'">
+          <a th:href="@{/app/timeChart}">
+            <i class="tim-icons icon-watch-time"></i>
+            <p>时间图表</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'novelCloud'} ? 'active'">
+          <a th:href="@{/app/novelCloud}">
+            <i class="tim-icons icon-cloud-upload-94"></i>
+            <p>词云分析</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'recommend'} ? 'active'">
+          <a th:href="@{/app/recommend}">
+            <i class="tim-icons icon-tablet-2"></i>
+            <p>小说推荐</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'authorChart'} ? 'active'">
+          <a th:href="@{/app/authorChart}">
+            <i class="tim-icons icon-single-02"></i>
+            <p>作者分析</p>
+          </a>
+        </li>
+        <li th:classappend="${currentPage == 'selfInfo'} ? 'active'">
+          <a th:href="@{/app/selfInfo}">
+            <i class="tim-icons icon-single-copy-04"></i>
+            <p>个人信息</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

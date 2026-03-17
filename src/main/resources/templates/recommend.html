@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+  <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+  <title>小说推荐 - 小说数据分析可视化系统</title>
+  <!-- CSS Files -->
+  <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}" />
+  <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link rel="stylesheet" th:href="@{/assets/demo/demo.css}" />
+</head>
+
+<body class="">
+  <div class="wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
+      <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+    </div>
+
+    <div class="main-panel">
+      <!-- 导航栏 -->
+      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">小说推荐</a>
+          </div>
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/app/logout}">
+                  <i class="tim-icons icon-button-power"></i> 退出
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 内容区域 -->
+      <div class="content">
+        <!-- 显示错误/成功消息 -->
+        <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+          <span th:text="${errorMessage}"></span>
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${successMessage}">
+          <span th:text="${successMessage}"></span>
+        </div>
+        <div class="row">
+          <h3 style="margin-left: 15px">个性化小说推荐</h3>
+          <p style="margin-left: 15px; color: #9a9a9a">根据您的阅读历史和偏好，为您推荐以下小说</p>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6" th:each="novel, iterStat : ${recommendData}">
+            <div class="card" style="margin-bottom: 20px;">
+              <div class="card-header">
+                <h5 class="card-title" th:text="${novel[1]}">小说名</h5>
+                <p class="card-category" th:text="${novel[0]}">类型</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <p class="text-info"><i class="tim-icons icon-single-02"></i> 作者: <span th:text="${novel[3]}">作者</span></p>
+                    <p class="text-warning"><i class="tim-icons icon-paper"></i> 字数: <span th:text="${novel[12]}">0</span></p>
+                    <p class="text-success"><i class="tim-icons icon-eye"></i> 阅读量: <span th:text="${novel[10]}">0</span></p>
+                    <p class="text-primary"><i class="tim-icons icon-heart-2"></i> 收藏量: <span th:text="${novel[11]}">0</span></p>
+                    <p class="text-danger"><i class="tim-icons icon-diamond"></i> 评分: <span th:text="${novel[17]}">0.0</span></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <a class="btn btn-sm btn-primary btn-block"
+                       th:href="@{/app/addHistory/{novelId}(novelId=${novel[21]})}">
+                      <i class="tim-icons icon-heart-2"></i> 加入收藏
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 如果没有推荐数据 -->
+          <div class="col-lg-12" th:if="${#lists.isEmpty(recommendData)}">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="text-center" style="color: #9a9a9a">暂无推荐数据</h4>
+                <p class="text-center">系统正在分析您的阅读偏好，请稍后再试或浏览更多小说。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="container-fluid">
+          <ul class="nav">
+          </ul>
+          <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Core JS Files -->
+  <script th:src="@{/assets/js/core/jquery.min.js}"></script>
+  <script th:src="@{/assets/js/core/popper.min.js}"></script>
+  <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+  <!-- Chart JS -->
+  <script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+  <!-- Notifications Plugin -->
+  <script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+  <!-- Control Center for Black Dashboard -->
+  <script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
+  <script th:src="@{/assets/demo/demo.js}"></script>
+
+  <!-- 内联JavaScript，使用Thymeleaf变量 -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+        $navbar = $('.navbar');
+        $main_panel = $('.main-panel');
+        $full_page = $('.full-page');
+        $sidebar_responsive = $('body > .navbar-collapse');
+        sidebar_mini_active = true;
+        white_color = false;
+        window_width = $(window).width();
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        $('.fixed-plugin a').click(function(event) {
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .background-color span').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+          var new_color = $(this).data('color');
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data', new_color);
+          }
+          if ($main_panel.length != 0) {
+            $main_panel.attr('data', new_color);
+          }
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data', new_color);
+          }
+        });
+
+        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+          if (sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            sidebar_mini_active = false;
+            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+          } else {
+            $('body').addClass('sidebar-mini');
+            sidebar_mini_active = true;
+            blackDashboard.showSidebarMessage('Sidebar mini activated...');
+          }
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+        });
+
+        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+          if (white_color == true) {
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').removeClass('white-content');
+            }, 900);
+            white_color = false;
+          } else {
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').addClass('white-content');
+            }, 900);
+            white_color = true;
+          }
+        });
+
+        $('.light-badge').click(function() {
+          $('body').addClass('white-content');
+        });
+        $('.dark-badge').click(function() {
+          $('body').removeClass('white-content');
+        });
+      });
+    });
+    /*]]>*/
+  </script>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      demo.initDashboardPageCharts();
+    });
+    /*]]>*/
+  </script>
+
+</body>
+</html>

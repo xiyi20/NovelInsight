@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>个人信息 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" th:href="@{/assets/demo/demo.css}"/>
+</head>
+
+<body class="">
+<div class="wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
+        <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+    </div>
+
+    <div class="main-panel">
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button class="navbar-toggler" type="button">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:void(0)">个人信息</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/app/logout}">
+                                <i class="tim-icons icon-button-power"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 内容区域 -->
+        <div class="content">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-category">个人信息</h5>
+                            <h3 class="card-title">修改密码</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- 显示消息 -->
+                            <div class="alert alert-success" role="alert" th:if="${successMessage}">
+                                <span th:text="${successMessage}"></span>
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+                                <span th:text="${errorMessage}"></span>
+                            </div>
+
+                            <form method="POST" th:action="@{/app/selfInfo}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>原密码</label>
+                                            <input class="form-control" name="oldPwd" placeholder="请输入原密码"
+                                                   required type="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>新密码</label>
+                                            <input class="form-control" name="newPwd" placeholder="请输入新密码"
+                                                   required type="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>确认新密码</label>
+                                            <input class="form-control" name="ckdPwd" placeholder="请确认新密码"
+                                                   required type="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="padding-top: 20px">
+                                        <button class="btn btn-fill btn-primary" type="submit">修改密码</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <p class="card-text">
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+<!--                                <img class="avatar" th:src="@{/assets/img/default-avatar.png}" alt="用户头像">-->
+                                <h5 class="title" th:text="${userInfo.username}">用户名</h5>
+                            </div>
+                            </p>
+                            <div class="card-description">
+                                <p>用户ID: <span th:text="${userInfo.id}">1</span></p>
+                                <p>注册时间: <span th:text="${userInfo.createTime}">2026-03-12</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+</body>
+</html>

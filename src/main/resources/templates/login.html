@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>登录 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+</head>
+
+<body class="">
+<div class="wrapper">
+    <div class="main-panel">
+        <div class="row" style="width:100%;">
+            <div class="col-md-5" style="display: grid;position: absolute;  top: 15%;left: 28%">
+                <div class="card card-user">
+                    <div class="card-body">
+                        <p class="card-text">
+                        <div class="author">
+                            <div class="block block-one"></div>
+                            <div class="block block-two"></div>
+                            <div class="block block-three"></div>
+                            <div class="block block-four"></div>
+                            <p class="description" style="font-size: 21px">
+                                小说数据分析可视化系统
+                            </p>
+                        </div>
+                        <div class="card-description" style="text-align: center">
+                            在此页面进行登录
+                        </div>
+                        <!-- 显示错误消息 -->
+                        <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+                        <div class="alert alert-success" role="alert" th:if="${successMessage}">
+                            <span th:text="${successMessage}"></span>
+                        </div>
+                        <!-- 登录表单 -->
+                        <form method="POST" th:action="@{/app/login}">
+                            <div class="row" style="margin-left: 10px">
+                                <div class="col-md-11 px-md-1">
+                                    <div class="form-group">
+                                        <label>用户名</label>
+                                        <input class="form-control" name="loginName" placeholder="请输入用户名"
+                                               type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-11 px-md-1">
+                                    <div class="form-group">
+                                        <label>密码</label>
+                                        <input class="form-control" name="loginPwd" placeholder="请输入密码"
+                                               type="password" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-11 px-md-1">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input id="remember-me" name="remember-me" type="checkbox">
+                                            <label for="remember-me" style="transform: translateY(-2px)">记住我</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding-right: 40px;padding-top: 25px">
+                                    <button class="btn btn-fill btn-primary" style="display: block;margin: 0 auto"
+                                            type="submit">登录
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <p class="text-muted" style="text-align: center">
+                                        还未创建账号? <a class="text-primary" th:href="@{/app/register}">点击注册</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+</body>
+</html>

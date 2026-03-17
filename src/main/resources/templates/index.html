@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>首页 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" th:href="@{/assets/demo/demo.css}"/>
+    <style>
+        .chart-area {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .card-chart .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-chart .card-category {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body class="">
+<div class="wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
+        <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+    </div>
+
+    <div class="main-panel">
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button class="navbar-toggler" type="button">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:void(0)">首页</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/app/logout}">
+                                <i class="tim-icons icon-button-power"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 内容区域 -->
+        <div class="content">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">最受欢迎小说</h5>
+                            <h3 class="card-title" th:text="'《'+${maxNovel}+'》'">示例小说</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">最高阅读量</h5>
+                            <h3 class="card-title" th:text="${maxReadNum}">10000</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">最高收藏量</h5>
+                            <h3 class="card-title" th:text="${maxFlowNum}">5000</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">最高打赏作者</h5>
+                            <h3 class="card-title" th:text="${maxAuthor}">示例作者</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">小说总数</h5>
+                            <h3 class="card-title" th:text="${totalNovels}">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">平均阅读量</h5>
+                            <h3 class="card-title" th:text="${avgReadNum}">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">平均收藏量</h5>
+                            <h3 class="card-title" th:text="${avgFlowNum}">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">累计打赏点</h5>
+                            <h3 class="card-title" th:text="${totalReward}">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">累计总字数</h5>
+                            <h3 class="card-title" th:text="${totalWords}">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">最热门类型</h5>
+                            <h3 class="card-title" th:text="${topType}">未知</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">最高单次打赏</h5>
+                            <h3 class="card-title" th:text="${maxRewardNum}">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-chart">
+                        <div class="card-header">
+                            <h5 class="card-category">数据更新时间</h5>
+                            <h3 class="card-title" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}">
+                                2026-03-17 15:30</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-category">热门小说阅读量TOP10</h5>
+                            <h3 class="card-title">阅读量与收藏量对比</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area" style="height: 410px">
+                                <div id="topNovelsChart" style="width: 100%; height: 120%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-category">小说类型分布</h5>
+                            <h3 class="card-title">各类型小说数量占比</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <div id="typePieChart" style="width: 100%; height: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-category">作者打赏排行榜TOP5</h5>
+                            <h3 class="card-title">作者打赏点</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <div id="authorRewardChart" style="width: 100%; height: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+<script th:src="@{/assets/echarts.js}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // 首页图表
+    window.addEventListener('load', function () {
+        // 图表1: 热门小说阅读量TOP10
+        renderTopNovelsChart();
+        // 图表2: 小说类型分布饼图
+        renderTypePieChart();
+        // 图表3: 作者打赏排行榜
+        renderAuthorRewardChart();
+    });
+
+    function renderTopNovelsChart() {
+        // 获取Thymeleaf传递的数据
+        const novelNames = /*[[${xData1}]]*/ [];
+        const readCounts = /*[[${yData1}]]*/ [];
+        const collectCounts = /*[[${yData2}]]*/ [];
+
+        if (novelNames.length === 0) {
+            console.warn('热门小说图表数据为空');
+            return;
+        }
+
+        // 限制显示数量（最多10个）
+        const displayCount = Math.min(novelNames.length, 10);
+        const displayNames = novelNames.slice(0, displayCount);
+        const displayReads = readCounts.slice(0, displayCount);
+        const displayCollects = collectCounts.slice(0, displayCount);
+
+        // 处理长小说名，避免X轴标签重叠
+        const shortenedNames = displayNames.map(name => {
+            if (name.length > 10) {
+                return name.substring(0, 8) + '...';
+            }
+            return name;
+        });
+
+        // 获取容器元素
+        const chartDom = document.getElementById('topNovelsChart');
+        const myChart = echarts.init(chartDom);
+
+        const option = {
+            title: {
+                text: '热门小说阅读量TOP10',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                },
+                left: 'center',
+                top: '2%'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function (params) {
+                    let result = params[0].name + '<br/>';
+                    params.forEach(function (item) {
+                        result += item.marker + ' ' + item.seriesName + ': ' + item.value.toLocaleString() + '<br/>';
+                    });
+                    return result;
+                }
+            },
+            legend: {
+                data: ['阅读量', '收藏量'],
+                textStyle: {
+                    color: '#9a9a9a'
+                },
+                top: '10%'
+            },
+            grid: {
+                top: '20%',
+                left: '5%',
+                right: '5%',
+                bottom: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: shortenedNames,
+                axisLabel: {
+                    color: '#9a9a9a',
+                    rotate: 45,
+                    interval: 0
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(255,255,255,0.2)'
+                    }
+                },
+                axisTick: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '阅读量',
+                nameTextStyle: {
+                    color: '#9a9a9a'
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                },
+                axisLabel: {
+                    color: '#9a9a9a'
+                }
+            },
+            series: [
+                {
+                    name: '阅读量',
+                    type: 'bar',
+                    data: displayReads,
+                    itemStyle: {
+                        color: '#6c50f3',
+                        barBorderRadius: [10, 10, 0, 0]
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        color: '#6c50f3',
+                        formatter: '{c}'
+                    }
+                },
+                {
+                    name: '收藏量',
+                    type: 'bar',
+                    data: displayCollects,
+                    itemStyle: {
+                        color: '#c545ac',
+                        barBorderRadius: [10, 10, 0, 0]
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        color: '#c545ac',
+                        formatter: '{c}'
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+        myChart.resize(); // 立即调整尺寸
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    }
+
+    function renderTypePieChart() {
+        // 获取饼图数据
+        const pieData = /*[[${PieData}]]*/ [];
+        const pieXData = /*[[${pieXData}]]*/ [];
+
+        if (pieData.length === 0) {
+            console.warn('类型分布数据为空');
+            return;
+        }
+
+        // 提取标签和数据
+        const labels = pieData.map(item => item.name);
+        const data = pieData.map(item => item.value);
+
+        // 获取容器元素
+        const chartDom = document.getElementById('typePieChart');
+        const myChart = echarts.init(chartDom);
+
+        // 生成颜色数组
+        const colorList = ['#73DDFF', '#73ACFF', '#5b50f0', '#592de8', '#e82ddd', '#9E87FF', '#58D5FF'];
+
+        const option = {
+            title: {
+                text: '小说类型分布',
+                left: 'center',
+                top: '2%',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                right: '5%',
+                top: 'center',
+                textStyle: {
+                    color: '#9a9a9a'
+                },
+                data: labels
+            },
+            series: [
+                {
+                    name: '小说类型',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    center: ['40%', '50%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        formatter: '{b}: {c} ({d}%)',
+                        color: '#9a9a9a'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: pieData.map((item, index) => ({
+                        name: item.name,
+                        value: item.value,
+                        itemStyle: {
+                            color: colorList[index % colorList.length]
+                        }
+                    }))
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+        myChart.resize(); // 立即调整尺寸
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    }
+
+    function renderAuthorRewardChart() {
+        // 获取作者打赏数据
+        const authors = /*[[${xLineData1}]]*/ [];
+        const rewards = /*[[${yLineData1}]]*/ [];
+
+        if (authors.length === 0) {
+            console.warn('作者打赏数据为空');
+            return;
+        }
+
+        // 限制显示数量（最多5个）
+        const displayCount = Math.min(authors.length, 5);
+        const displayAuthors = authors.slice(0, displayCount);
+        const displayRewards = rewards.slice(0, displayCount);
+
+        // 处理长作者名
+        const shortenedAuthors = displayAuthors.map(author => {
+            if (author.length > 8) {
+                return author.substring(0, 6) + '...';
+            }
+            return author;
+        });
+
+        // 获取容器元素
+        const chartDom = document.getElementById('authorRewardChart');
+        const myChart = echarts.init(chartDom);
+
+        const option = {
+            title: {
+                text: '作者打赏排行榜TOP5',
+                left: 'center',
+                top: '2%',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function (params) {
+                    const author = displayAuthors[params[0].dataIndex];
+                    const reward = params[0].value;
+                    return author + ': ' + reward.toFixed(1) + ' 点';
+                }
+            },
+            grid: {
+                top: '20%',
+                left: '5%',
+                right: '5%',
+                bottom: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: shortenedAuthors,
+                axisLabel: {
+                    color: '#9a9a9a',
+                    interval: 0
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(255,255,255,0.2)'
+                    }
+                },
+                axisTick: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '打赏点',
+                nameTextStyle: {
+                    color: '#9a9a9a'
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                },
+                axisLabel: {
+                    color: '#9a9a9a'
+                }
+            },
+            series: [
+                {
+                    name: '打赏金额',
+                    type: 'bar',
+                    data: displayRewards,
+                    itemStyle: {
+                        color: '#5b50f0',
+                        barBorderRadius: [10, 10, 0, 0]
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        color: '#5b50f0',
+                        formatter: '{c}'
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+        myChart.resize(); // 立即调整尺寸
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    }
+
+    // 生成颜色数组的辅助函数
+    /*]]>*/
+</script>
+</body>
+</html>

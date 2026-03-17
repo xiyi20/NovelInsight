@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+  <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+  <title>小说信息分析 - 小说数据分析可视化系统</title>
+  <!-- CSS Files -->
+  <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}" />
+  <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link rel="stylesheet" th:href="@{/assets/demo/demo.css}" />
+</head>
+
+<body class="">
+  <div class="wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
+      <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+    </div>
+
+    <div class="main-panel">
+      <!-- 导航栏 -->
+      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">小说信息分析</a>
+          </div>
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/app/logout}">
+                  <i class="tim-icons icon-button-power"></i> 退出
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 内容区域 -->
+      <div class="content">
+        <!-- 显示错误/成功消息 -->
+        <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+          <span th:text="${errorMessage}"></span>
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${successMessage}">
+          <span th:text="${successMessage}"></span>
+        </div>
+        <div class="row">
+          <h3 style="margin-left: 15px">小说信息分析</h3>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12" style="margin-bottom: 17px">
+            <select class="form-control col-lg-3" onchange="typeChange(event)">
+              <option th:each="type : ${typeList}"
+                      th:selected="${type == defaultType}"
+                      th:text="${type}"
+                      th:value="${type}">
+                类型
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <div class="card card-tasks" style="height: 550px">
+              <div class="card-header">
+                <h4 class="title d-inline"><span th:text="${defaultType}">类型</span> 小说信息阅读量区间分析</h4>
+                <div class="dropdown">
+                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#pablo">Action</a>
+                    <a class="dropdown-item" href="#pablo">Another action</a>
+                    <a class="dropdown-item" href="#pablo">Something else</a>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="mainB" style="width: 100%; height: 470px"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <div class="card card-tasks" style="height: 550px">
+              <div class="card-header">
+                <h4 class="title d-inline"><span th:text="${defaultType}">类型</span> 小说信息文字数区间分析</h4>
+                <div class="dropdown">
+                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#pablo">Action</a>
+                    <a class="dropdown-item" href="#pablo">Another action</a>
+                    <a class="dropdown-item" href="#pablo">Something else</a>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="mainC" style="width: 100%; height: 470px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="container-fluid">
+          <ul class="nav">
+          </ul>
+          <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Core JS Files -->
+  <script th:src="@{/assets/js/core/jquery.min.js}"></script>
+  <script th:src="@{/assets/js/core/popper.min.js}"></script>
+  <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+  <!-- Chart JS -->
+  <script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+  <!-- Notifications Plugin -->
+  <script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+  <!-- Control Center for Black Dashboard -->
+  <script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
+  <script th:src="@{/assets/demo/demo.js}"></script>
+  <script th:src="@{/assets/echarts.js}"></script>
+
+  <!-- 内联JavaScript，使用Thymeleaf变量 -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+        $navbar = $('.navbar');
+        $main_panel = $('.main-panel');
+        $full_page = $('.full-page');
+        $sidebar_responsive = $('body > .navbar-collapse');
+        sidebar_mini_active = true;
+        white_color = false;
+        window_width = $(window).width();
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        $('.fixed-plugin a').click(function(event) {
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .background-color span').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+          var new_color = $(this).data('color');
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data', new_color);
+          }
+          if ($main_panel.length != 0) {
+            $main_panel.attr('data', new_color);
+          }
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data', new_color);
+          }
+        });
+
+        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+          if (sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            sidebar_mini_active = false;
+            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+          } else {
+            $('body').addClass('sidebar-mini');
+            sidebar_mini_active = true;
+            blackDashboard.showSidebarMessage('Sidebar mini activated...');
+          }
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+        });
+
+        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+          if (white_color == true) {
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').removeClass('white-content');
+            }, 900);
+            white_color = false;
+          } else {
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').addClass('white-content');
+            }, 900);
+            white_color = true;
+          }
+        });
+
+        $('.light-badge').click(function() {
+          $('body').addClass('white-content');
+        });
+        $('.dark-badge').click(function() {
+          $('body').removeClass('white-content');
+        });
+      });
+    });
+    /*]]>*/
+  </script>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      demo.initDashboardPageCharts();
+    });
+    /*]]>*/
+  </script>
+
+  <!-- ECharts图表脚本 -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    // 第一个图表：阅读量区间分析
+    var chartDomB = document.getElementById('mainB');
+    var myChartB = echarts.init(chartDomB);
+    var optionB;
+
+    optionB = {
+      title: {
+        text: '阅读量区间分析',
+        textStyle: {
+          align: 'center',
+          color: '#fff',
+          fontSize: 20,
+        },
+        top: '5%',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      grid: {
+        top: '15%',
+        left: '5%',
+        right: '5%',
+        bottom: '15%',
+      },
+      xAxis: [{
+        type: 'category',
+        data: /*[[${xData1}]]*/ [],
+        axisLabel: {
+          color: '#9a9a9a'
+        },
+        axisLine: {
+          show: true
+        },
+        axisTick: {
+          show: false
+        },
+      }],
+      yAxis: [{
+        type: 'value',
+        min: 0,
+        splitNumber: 4,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: 'rgba(255,255,255,0.1)'
+          }
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          show: true,
+          margin: 20,
+          textStyle: {
+            color: '#d1e6eb',
+          },
+        },
+        axisTick: {
+          show: false,
+        },
+      }],
+      series: [{
+        name: '小说数量',
+        type: 'bar',
+        data: /*[[${yData1}]]*/ [],
+        itemStyle: {
+          color: '#6c50f3',
+          barBorderRadius: [10, 10, 0, 0],
+        },
+        label: {
+          show: true,
+          position: 'top',
+          textStyle: {
+            color: '#6c50f3',
+          }
+        },
+      }]
+    };
+
+    optionB && myChartB.setOption(optionB);
+
+    // 第二个图表：字数区间分析
+    var chartDomC = document.getElementById('mainC');
+    var myChartC = echarts.init(chartDomC);
+    var optionC;
+
+    optionC = {
+      title: {
+        text: '字数区间分析',
+        textStyle: {
+          align: 'center',
+          color: '#fff',
+          fontSize: 20,
+        },
+        top: '5%',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      grid: {
+        top: '15%',
+        left: '5%',
+        right: '5%',
+        bottom: '15%',
+      },
+      xAxis: [{
+        type: 'category',
+        data: /*[[${xData2}]]*/ [],
+        axisLabel: {
+          color: '#9a9a9a'
+        },
+        axisLine: {
+          show: true
+        },
+        axisTick: {
+          show: false
+        },
+      }],
+      yAxis: [{
+        type: 'value',
+        min: 0,
+        splitNumber: 4,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: 'rgba(255,255,255,0.1)'
+          }
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          show: true,
+          margin: 20,
+          textStyle: {
+            color: '#d1e6eb',
+          },
+        },
+        axisTick: {
+          show: false,
+        },
+      }],
+      series: [{
+        name: '小说数量',
+        type: 'bar',
+        data: /*[[${yData2}]]*/ [],
+        itemStyle: {
+          color: '#c545ac',
+          barBorderRadius: [10, 10, 0, 0],
+        },
+        label: {
+          show: true,
+          position: 'top',
+          textStyle: {
+            color: '#c545ac',
+          }
+        },
+      }]
+    };
+
+    optionC && myChartC.setOption(optionC);
+    /*]]>*/
+  </script>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    function typeChange(e) {
+      var selectedType = e.target.value;
+      var url = '/app/infoChart?typeName=' + selectedType;
+      window.location.href = url;
+    }
+    /*]]>*/
+  </script>
+
+</body>
+</html>
