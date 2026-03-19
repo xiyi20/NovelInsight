@@ -3,7 +3,6 @@ package com.novelinsight.controller;
 import com.novelinsight.model.User;
 import com.novelinsight.service.ChartDataService;
 import com.novelinsight.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -23,9 +22,8 @@ public class HomeController {
         this.chartDataService = chartDataService;
     }
 
-    @GetMapping("/index")
-    public String index(HttpServletRequest request, Model model,
-                        @AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping
+    public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
 

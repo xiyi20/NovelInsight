@@ -266,19 +266,11 @@ if __name__ == '__main__':
     '''
         需求12
     '''
-    max_authorWords_df = novelData.groupby("type").agg(F.max("authorWords").alias("max_Words"))
-    novelData_alias = novelData.alias("novel")
-    max_authorWords_df = max_authorWords_df.alias("maxWord")
-    result12 = novelData_alias.join(max_authorWords_df,
-                                    (novelData_alias.type == max_authorWords_df.type) &
-                                    (novelData_alias.authorWords == max_authorWords_df.max_Words),
-                                    "inner"
-                                    ) \
-        .select(
-        novelData_alias.type.alias("type"),
-        novelData_alias.author.alias("author"),
-        max_authorWords_df.max_Words.alias("max_Words")
+    author_global_stats = novelData.groupBy("author").agg(
+        F.max("authorWords").alias("wordNum"),
     )
+
+    result12 = author_global_stats.orderBy(F.col("wordNum").desc()).limit(10)
     #
     result12.write.mode("overwrite"). \
         format("jdbc"). \

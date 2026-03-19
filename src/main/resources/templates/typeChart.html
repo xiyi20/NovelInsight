@@ -1,248 +1,264 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-  <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
-  <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
-  <title>类型分析 - 小说数据分析可视化系统</title>
-  <!-- CSS Files -->
-  <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" th:href="@{/assets/demo/demo.css}" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>主题分析 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" th:href="@{/assets/demo/demo.css}"/>
 </head>
 
 <body class="">
-  <div class="wrapper">
+<div class="wrapper">
     <!-- 侧边栏 -->
     <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
-      <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+        <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
     </div>
 
     <div class="main-panel">
-      <!-- 导航栏 -->
-      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <div class="navbar-toggle d-inline">
-              <button class="navbar-toggler" type="button">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </button>
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button class="navbar-toggler" type="button">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:void(0)">主题分析</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/app/logout}">
+                                <i class="tim-icons icon-button-power"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <a class="navbar-brand" href="javascript:void(0)">类型分析</a>
-          </div>
-          <div class="collapse navbar-collapse" id="navigation">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" th:href="@{/app/logout}">
-                  <i class="tim-icons icon-button-power"></i> 退出
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+        </nav>
 
-      <!-- 内容区域 -->
-      <div class="content">
-        <!-- 显示错误/成功消息 -->
-        <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
-          <span th:text="${errorMessage}"></span>
-        </div>
-        <div class="alert alert-success" role="alert" th:if="${successMessage}">
-          <span th:text="${successMessage}"></span>
-        </div>
-        <div class="row">
-          <h3 style="margin-left: 15px">类型分析</h3>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 col-md-12">
-            <div class="card card-tasks" style="height: 550px">
-              <div class="card-header">
-                <h4 class="title d-inline">各类型阅读量/鲜花量统计分析</h4>
-                <div class="dropdown">
-                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="mainA" style="width: 100%; height: 470px"></div>
-              </div>
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 显示错误/成功消息 -->
+            <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+                <span th:text="${errorMessage}"></span>
             </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks" style="height: 550px">
-              <div class="card-header">
-                <h4 class="title d-inline">各类型分享最多小说分析</h4>
-                <div class="dropdown">
-                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="mainB" style="width: 100%; height: 470px"></div>
-              </div>
+            <div class="alert alert-success" role="alert" th:if="${successMessage}">
+                <span th:text="${successMessage}"></span>
             </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks" style="height: 550px">
-              <div class="card-header">
-                <h4 class="title d-inline">各类型小说占比分析</h4>
-                <div class="dropdown">
-                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="mainC" style="width: 100%; height: 470px"></div>
-              </div>
+            <div class="row">
+                <h3 style="margin-left: 15px">类型分析</h3>
             </div>
-          </div>
-        </div>
-      </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">各类型阅读量/鲜花量统计分析</h4>
 
-      <footer class="footer">
-        <div class="container-fluid">
-          <ul class="nav">
-          </ul>
-          <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+                        </div>
+                        <div class="card-body">
+                            <div id="mainA" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">各类型分享最多小说分析</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="mainB" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">各类型小说占比分析</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="mainC" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主题分析图表 -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card card-tasks" style="height: 490px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">主题市场表现分析</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="marketPerformanceChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">主题受欢迎程度分析</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="popularityChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">主题字数分布分析</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="wordLengthChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </footer>
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <ul class="nav">
+                </ul>
+                <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+            </div>
+        </footer>
     </div>
-  </div>
+</div>
 
-  <!-- Core JS Files -->
-  <script th:src="@{/assets/js/core/jquery.min.js}"></script>
-  <script th:src="@{/assets/js/core/popper.min.js}"></script>
-  <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
-  <script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
-  <!-- Chart JS -->
-  <script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
-  <!-- Notifications Plugin -->
-  <script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
-  <!-- Control Center for Black Dashboard -->
-  <script th:src="@{/assets/js/black-dashboard.min.js}"></script>
-  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-  <script th:src="@{/assets/demo/demo.js}"></script>
-  <script th:src="@{/assets/echarts.js}"></script>
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+<script th:src="@{/assets/echarts.js}"></script>
 
-  <!-- 内联JavaScript，使用Thymeleaf变量 -->
-  <script th:inline="javascript">
+<!-- 内联JavaScript，使用Thymeleaf变量 -->
+<script th:inline="javascript">
     /*<![CDATA[*/
-    $(document).ready(function() {
-      $().ready(function() {
-        $sidebar = $('.sidebar');
-        $navbar = $('.navbar');
-        $main_panel = $('.main-panel');
-        $full_page = $('.full-page');
-        $sidebar_responsive = $('body > .navbar-collapse');
-        sidebar_mini_active = true;
-        white_color = false;
-        window_width = $(window).width();
-        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-        $('.fixed-plugin a').click(function(event) {
-          if ($(this).hasClass('switch-trigger')) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            } else if (window.event) {
-              window.event.cancelBubble = true;
-            }
-          }
-        });
-
-        $('.fixed-plugin .background-color span').click(function() {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
-          var new_color = $(this).data('color');
-          if ($sidebar.length != 0) {
-            $sidebar.attr('data', new_color);
-          }
-          if ($main_panel.length != 0) {
-            $main_panel.attr('data', new_color);
-          }
-          if ($full_page.length != 0) {
-            $full_page.attr('filter-color', new_color);
-          }
-          if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.attr('data', new_color);
-          }
-        });
-
-        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
-          var $btn = $(this);
-          if (sidebar_mini_active == true) {
-            $('body').removeClass('sidebar-mini');
-            sidebar_mini_active = false;
-            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
-          } else {
-            $('body').addClass('sidebar-mini');
+    $(document).ready(function () {
+        $().ready(function () {
+            $sidebar = $('.sidebar');
+            $navbar = $('.navbar');
+            $main_panel = $('.main-panel');
+            $full_page = $('.full-page');
+            $sidebar_responsive = $('body > .navbar-collapse');
             sidebar_mini_active = true;
-            blackDashboard.showSidebarMessage('Sidebar mini activated...');
-          }
-          var simulateWindowResize = setInterval(function() {
-            window.dispatchEvent(new Event('resize'));
-          }, 180);
-          setTimeout(function() {
-            clearInterval(simulateWindowResize);
-          }, 1000);
-        });
-
-        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
-          var $btn = $(this);
-          if (white_color == true) {
-            $('body').addClass('change-background');
-            setTimeout(function() {
-              $('body').removeClass('change-background');
-              $('body').removeClass('white-content');
-            }, 900);
             white_color = false;
-          } else {
-            $('body').addClass('change-background');
-            setTimeout(function() {
-              $('body').removeClass('change-background');
-              $('body').addClass('white-content');
-            }, 900);
-            white_color = true;
-          }
-        });
+            window_width = $(window).width();
+            fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-        $('.light-badge').click(function() {
-          $('body').addClass('white-content');
+            $('.fixed-plugin a').click(function (event) {
+                if ($(this).hasClass('switch-trigger')) {
+                    if (event.stopPropagation) {
+                        event.stopPropagation();
+                    } else if (window.event) {
+                        window.event.cancelBubble = true;
+                    }
+                }
+            });
+
+            $('.fixed-plugin .background-color span').click(function () {
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                var new_color = $(this).data('color');
+                if ($sidebar.length != 0) {
+                    $sidebar.attr('data', new_color);
+                }
+                if ($main_panel.length != 0) {
+                    $main_panel.attr('data', new_color);
+                }
+                if ($full_page.length != 0) {
+                    $full_page.attr('filter-color', new_color);
+                }
+                if ($sidebar_responsive.length != 0) {
+                    $sidebar_responsive.attr('data', new_color);
+                }
+            });
+
+            $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function () {
+                var $btn = $(this);
+                if (sidebar_mini_active == true) {
+                    $('body').removeClass('sidebar-mini');
+                    sidebar_mini_active = false;
+                    blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+                } else {
+                    $('body').addClass('sidebar-mini');
+                    sidebar_mini_active = true;
+                    blackDashboard.showSidebarMessage('Sidebar mini activated...');
+                }
+                var simulateWindowResize = setInterval(function () {
+                    window.dispatchEvent(new Event('resize'));
+                }, 180);
+                setTimeout(function () {
+                    clearInterval(simulateWindowResize);
+                }, 1000);
+            });
+
+            $('.switch-change-color input').on("switchChange.bootstrapSwitch", function () {
+                var $btn = $(this);
+                if (white_color == true) {
+                    $('body').addClass('change-background');
+                    setTimeout(function () {
+                        $('body').removeClass('change-background');
+                        $('body').removeClass('white-content');
+                    }, 900);
+                    white_color = false;
+                } else {
+                    $('body').addClass('change-background');
+                    setTimeout(function () {
+                        $('body').removeClass('change-background');
+                        $('body').addClass('white-content');
+                    }, 900);
+                    white_color = true;
+                }
+            });
+
+            $('.light-badge').click(function () {
+                $('body').addClass('white-content');
+            });
+            $('.dark-badge').click(function () {
+                $('body').removeClass('white-content');
+            });
         });
-        $('.dark-badge').click(function() {
-          $('body').removeClass('white-content');
-        });
-      });
     });
     /*]]>*/
-  </script>
+</script>
 
-  <script th:inline="javascript">
+<script th:inline="javascript">
     /*<![CDATA[*/
-    $(document).ready(function() {
-      demo.initDashboardPageCharts();
+    $(document).ready(function () {
+        demo.initDashboardPageCharts();
     });
     /*]]>*/
-  </script>
+</script>
 
-  <!-- ECharts图表脚本 -->
-  <script th:inline="javascript">
+<!-- ECharts图表脚本 -->
+<script th:inline="javascript">
     /*<![CDATA[*/
     // 第一个图表：各类型阅读量/鲜花量统计分析
     var chartDom = document.getElementById('mainA');
@@ -250,194 +266,194 @@
     var option;
 
     option = {
-      title: {
-        textStyle: {
-          align: 'center',
-          color: '#fff',
-          fontSize: 20,
+        title: {
+            textStyle: {
+                align: 'center',
+                color: '#fff',
+                fontSize: 20,
+            },
+            top: '5%',
+            left: 'center',
         },
-        top: '5%',
-        left: 'center',
-      },
-      legend: {
-        textStyle: {
-          color: '#9a9a9a',
-        },
-        top: '3%',
-        left: 'center',
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          lineStyle: {
-            color: {
-              type: 'linear',
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [{
-                offset: 0,
-                color: 'rgba(0, 255, 233,0)'
-              }, {
-                offset: 0.5,
-                color: 'rgba(255, 255, 255,1)',
-              }, {
-                offset: 1,
-                color: 'rgba(0, 255, 233,0)'
-              }],
-              global: false
-            }
-          },
-        },
-      },
-      grid: {
-        top: '15%',
-        left: '5%',
-        right: '5%',
-        bottom: '15%',
-      },
-      xAxis: [{
-        type: 'category',
-        axisLine: {
-          show: true
-        },
-        splitArea: {
-          color: '#f00',
-          lineStyle: {
-            color: '#f00'
-          },
-        },
-        axisLabel: {
-          color: '#9a9a9a'
-        },
-        splitLine: {
-          show: false
-        },
-        boundaryGap: false,
-        data: /*[[${xLine1}]]*/ [],
-      }],
-      yAxis: [{
-        type: 'value',
-        min: 0,
-        splitNumber: 4,
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          show: false,
-          margin: 20,
-          textStyle: {
-            color: '#d1e6eb',
-          },
-        },
-        axisTick: {
-          show: false,
-        },
-      }],
-      series: [{
-        name: '阅读量',
-        type: 'line',
-        showAllSymbol: true,
-        symbol: 'circle',
-        symbolSize: 25,
-        lineStyle: {
-          normal: {
-            color: "#6c50f3",
-            shadowColor: 'rgba(0, 0, 0, .3)',
-            shadowBlur: 0,
-            shadowOffsetY: 5,
-            shadowOffsetX: 5,
-          },
-        },
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#6c50f3',
-          }
-        },
-        itemStyle: {
-          color: "#6c50f3",
-          borderColor: "#fff",
-          borderWidth: 3,
-          shadowColor: 'rgba(0, 0, 0, .3)',
-          shadowBlur: 0,
-          shadowOffsetY: 2,
-          shadowOffsetX: 2,
+        legend: {
+            textStyle: {
+                color: '#9a9a9a',
+            },
+            top: '3%',
+            left: 'center',
         },
         tooltip: {
-          show: false
+            trigger: 'axis',
+            axisPointer: {
+                lineStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0,
+                            color: 'rgba(0, 255, 233,0)'
+                        }, {
+                            offset: 0.5,
+                            color: 'rgba(255, 255, 255,1)',
+                        }, {
+                            offset: 1,
+                            color: 'rgba(0, 255, 233,0)'
+                        }],
+                        global: false
+                    }
+                },
+            },
         },
-        areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-              offset: 0,
-              color: '#6c50f3'
-            }, {
-              offset: 1,
-              color: 'transparent'
-            }], false),
-            shadowColor: '#6c50f3',
-            shadowBlur: 20
-          }
+        grid: {
+            top: '15%',
+            left: '5%',
+            right: '5%',
+            bottom: '15%',
         },
-        data: /*[[${yLine1}]]*/ [],
-      }, {
-        name: '鲜花数',
-        type: 'line',
-        showAllSymbol: true,
-        symbol: 'circle',
-        symbolSize: 25,
-        lineStyle: {
-          normal: {
-            color: "#c545ac",
-            shadowColor: 'rgba(0, 0, 0, .3)',
-            shadowBlur: 0,
-            shadowOffsetY: 5,
-            shadowOffsetX: 5,
-          },
-        },
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#c545ac',
-          }
-        },
-        itemStyle: {
-          color: "#c545ac",
-          borderColor: "#fff",
-          borderWidth: 3,
-          shadowColor: 'rgba(0, 0, 0, .3)',
-          shadowBlur: 0,
-          shadowOffsetY: 2,
-          shadowOffsetX: 2,
-        },
-        tooltip: {
-          show: false
-        },
-        areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-              offset: 0,
-              color: '#c545ac'
-            }, {
-              offset: 1,
-              color: 'transparent'
-            }], false),
-            shadowColor: '#c545ac',
-            shadowBlur: 20
-          }
-        },
-        data: /*[[${yLine2}]]*/ [],
-      }]
+        xAxis: [{
+            type: 'category',
+            axisLine: {
+                show: true
+            },
+            splitArea: {
+                color: '#f00',
+                lineStyle: {
+                    color: '#f00'
+                },
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            splitLine: {
+                show: false
+            },
+            boundaryGap: false,
+            data: /*[[${xLine1}]]*/ [],
+        }],
+        yAxis: [{
+            type: 'value',
+            min: 0,
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            },
+            axisLine: {
+                show: false,
+            },
+            axisLabel: {
+                show: false,
+                margin: 20,
+                textStyle: {
+                    color: '#d1e6eb',
+                },
+            },
+            axisTick: {
+                show: false,
+            },
+        }],
+        series: [{
+            name: '阅读量',
+            type: 'line',
+            showAllSymbol: true,
+            symbol: 'circle',
+            symbolSize: 25,
+            lineStyle: {
+                normal: {
+                    color: "#6c50f3",
+                    shadowColor: 'rgba(0, 0, 0, .3)',
+                    shadowBlur: 0,
+                    shadowOffsetY: 5,
+                    shadowOffsetX: 5,
+                },
+            },
+            label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                    color: '#6c50f3',
+                }
+            },
+            itemStyle: {
+                color: "#6c50f3",
+                borderColor: "#fff",
+                borderWidth: 3,
+                shadowColor: 'rgba(0, 0, 0, .3)',
+                shadowBlur: 0,
+                shadowOffsetY: 2,
+                shadowOffsetX: 2,
+            },
+            tooltip: {
+                show: false
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#6c50f3'
+                    }, {
+                        offset: 1,
+                        color: 'transparent'
+                    }], false),
+                    shadowColor: '#6c50f3',
+                    shadowBlur: 20
+                }
+            },
+            data: /*[[${yLine1}]]*/ [],
+        }, {
+            name: '鲜花数',
+            type: 'line',
+            showAllSymbol: true,
+            symbol: 'circle',
+            symbolSize: 25,
+            lineStyle: {
+                normal: {
+                    color: "#c545ac",
+                    shadowColor: 'rgba(0, 0, 0, .3)',
+                    shadowBlur: 0,
+                    shadowOffsetY: 5,
+                    shadowOffsetX: 5,
+                },
+            },
+            label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                    color: '#c545ac',
+                }
+            },
+            itemStyle: {
+                color: "#c545ac",
+                borderColor: "#fff",
+                borderWidth: 3,
+                shadowColor: 'rgba(0, 0, 0, .3)',
+                shadowBlur: 0,
+                shadowOffsetY: 2,
+                shadowOffsetX: 2,
+            },
+            tooltip: {
+                show: false
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#c545ac'
+                    }, {
+                        offset: 1,
+                        color: 'transparent'
+                    }], false),
+                    shadowColor: '#c545ac',
+                    shadowBlur: 20
+                }
+            },
+            data: /*[[${yLine2}]]*/ [],
+        }]
     };
 
     option && myChart.setOption(option);
@@ -448,91 +464,91 @@
     var option2;
 
     var colorArr = [{
-      top: '#dc4ecf',
-      bottom: '#a44fda'
+        top: '#dc4ecf',
+        bottom: '#a44fda'
     }];
 
     option2 = {
-      grid: {
-        top: '15%',
-        right: '3%',
-        left: '10%',
-        bottom: '15%'
-      },
-      xAxis: [{
-        type: 'category',
-        color: '#59588D',
-        data: /*[[${xBar1}]]*/ [],
-        axisLabel: {
-          margin: 20,
-          color: '#999',
-          textStyle: {
-            fontSize: 12
-          },
+        grid: {
+            top: '15%',
+            right: '3%',
+            left: '10%',
+            bottom: '15%'
         },
-        axisLine: {
-          lineStyle: {
-            color: 'rgba(107,107,107,0.37)',
-          }
-        },
-        axisTick: {
-          show: false
-        },
-      }],
-      yAxis: [{
-        min: 0,
-        axisLabel: {
-          formatter: '{value}',
-          color: '#999',
-          textStyle: {
-            fontSize: 18
-          },
-        },
-        axisLine: {
-          lineStyle: {
-            color: 'rgba(107,107,107,0.37)',
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        splitLine: {
-          lineStyle: {
-            color: 'rgba(131,101,101,0.2)',
-            type: 'dashed',
-          }
-        }
-      }],
-      tooltip: {},
-      series: [{
-        type: 'bar',
-        data: /*[[${yBar1}]]*/ [],
-        barWidth: '50px',
-        itemStyle: {
-          normal: {
-            color: function(params) {
-              let num = colorArr.length;
-              return new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: colorArr[params.dataIndex % num].top
-              }, {
-                offset: 1,
-                color: colorArr[params.dataIndex % num].bottom
-              }], false)
+        xAxis: [{
+            type: 'category',
+            color: '#59588D',
+            data: /*[[${xBar1}]]*/ [],
+            axisLabel: {
+                margin: 20,
+                color: '#999',
+                textStyle: {
+                    fontSize: 12
+                },
             },
-            barBorderRadius: [30, 30, 0, 0],
-          }
-        },
-        label: {
-          normal: {
-            show: true,
-            fontSize: 18,
-            fontWeight: 'bold',
-            color: '#9a9a9a',
-            position: 'top',
-          }
-        }
-      }]
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)',
+                }
+            },
+            axisTick: {
+                show: false
+            },
+        }],
+        yAxis: [{
+            min: 0,
+            axisLabel: {
+                formatter: '{value}',
+                color: '#999',
+                textStyle: {
+                    fontSize: 18
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)',
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(131,101,101,0.2)',
+                    type: 'dashed',
+                }
+            }
+        }],
+        tooltip: {},
+        series: [{
+            type: 'bar',
+            data: /*[[${yBar1}]]*/ [],
+            barWidth: '50px',
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        let num = colorArr.length;
+                        return new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: colorArr[params.dataIndex % num].top
+                        }, {
+                            offset: 1,
+                            color: colorArr[params.dataIndex % num].bottom
+                        }], false)
+                    },
+                    barBorderRadius: [30, 30, 0, 0],
+                }
+            },
+            label: {
+                normal: {
+                    show: true,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: '#9a9a9a',
+                    position: 'top',
+                }
+            }
+        }]
     };
 
     option2 && myChart2.setOption(option2);
@@ -546,65 +562,476 @@
     var colorList = ['#73DDFF', '#73ACFF', '#5b50f0', '#592de8', '#e82ddd', '#9E87FF', '#58D5FF']
 
     option3 = {
-      title: {
-        text: 'pieChart',
-        x: 'center',
-        y: 'center',
-        textStyle: {
-          fontSize: 18,
-          color: '#9a9a9a'
-        }
-      },
-      tooltip: {
-        trigger: 'item'
-      },
-      series: [{
-        type: 'pie',
-        center: ['50%', '50%'],
-        radius: ['24%', '43%'],
-        clockwise: true,
-        avoidLabelOverlap: true,
-        hoverOffset: 15,
-        itemStyle: {
-          normal: {
-            color: function(params) {
-              return colorList[params.dataIndex]
+        title: {
+            x: 'center',
+            y: 'center',
+            textStyle: {
+                fontSize: 18,
+                color: '#9a9a9a'
             }
-          }
         },
-        label: {
-          show: true,
-          position: 'outside',
-          formatter: '{a|{b}：{d}%}\n{hr|}',
-          rich: {
-            hr: {
-              backgroundColor: 't',
-              borderRadius: 3,
-              width: 3,
-              height: 3,
-              padding: [3, 3, 0, -12]
+        tooltip: {
+            trigger: 'item'
+        },
+        series: [{
+            type: 'pie',
+            center: ['50%', '50%'],
+            radius: ['24%', '43%'],
+            clockwise: true,
+            avoidLabelOverlap: true,
+            hoverOffset: 15,
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
             },
-            a: {
-              padding: [-30, 15, -20, 15]
+            label: {
+                show: true,
+                position: 'outside',
+                formatter: '{a|{b}：{d}%}\n{hr|}',
+                rich: {
+                    hr: {
+                        backgroundColor: 't',
+                        borderRadius: 3,
+                        width: 3,
+                        height: 3,
+                        padding: [3, 3, 0, -12]
+                    },
+                    a: {
+                        padding: [-30, 15, -20, 15]
+                    },
+                }
             },
-          }
-        },
-        labelLine: {
-          normal: {
-            length: 20,
-            length2: 30,
-            lineStyle: {
-              width: 1
-            }
-          }
-        },
-        data: /*[[${pieData1}]]*/ [],
-      }]
+            labelLine: {
+                normal: {
+                    length: 20,
+                    length2: 30,
+                    lineStyle: {
+                        width: 1
+                    }
+                }
+            },
+            data: /*[[${pieData1}]]*/ [],
+        }]
     };
 
     option3 && myChart3.setOption(option3);
+
+    // 主题分析图表
+    // 从Thymeleaf获取数据
+    var marketData = /*[[${marketData}]]*/ {};
+    var popularityData = /*[[${popularityData}]]*/ {};
+    var wordLengthData = /*[[${wordLengthData}]]*/ {};
+
+    // 1. 主题市场表现柱状图
+    var marketChartDom = document.getElementById('marketPerformanceChart');
+    var marketChart = echarts.init(marketChartDom);
+
+    var marketOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: function (params) {
+                var result = params[0].name + '<br/>';
+                params.forEach(function (item) {
+                    result += item.marker + item.seriesName + ': ' + item.value + '<br/>';
+                });
+                return result;
+            }
+        },
+        legend: {
+            data: ['作品数量', '热度指数', '平均阅读量', '平均收藏量'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        xAxis: {
+            type: 'category',
+            data: marketData.themeNames || [],
+            axisLabel: {
+                color: '#9a9a9a',
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            axisTick: {
+                alignWithLabel: true
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        yAxis: [
+            {
+                type: 'value',
+                name: '数量',
+                nameTextStyle: {
+                    color: '#9a9a9a'
+                },
+                axisLabel: {
+                    color: '#9a9a9a'
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgba(107,107,107,0.37)'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                }
+            },
+            {
+                type: 'value',
+                name: '阅读/收藏',
+                nameTextStyle: {
+                    color: '#9a9a9a'
+                },
+                axisLabel: {
+                    color: '#9a9a9a',
+                    formatter: function (value) {
+                        if (value >= 10000) {
+                            return (value / 10000).toFixed(1) + '万';
+                        }
+                        return value;
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgba(107,107,107,0.37)'
+                    }
+                },
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        series: [
+            {
+                name: '作品数量',
+                type: 'bar',
+                stack: 'total',
+                data: marketData.novelCount || [],
+                barWidth: 40,
+                itemStyle: {
+                    color: '#5470c6'
+                }
+            },
+            {
+                name: '热度指数',
+                type: 'bar',
+                stack: 'total',
+                data: marketData.popularityIndex || [],
+                barWidth: 40,
+                itemStyle: {
+                    color: '#91cc75'
+                }
+            },
+            {
+                name: '平均阅读量',
+                type: 'line',
+                yAxisIndex: 1,
+                data: marketData.avgRead || [],
+                itemStyle: {
+                    color: '#fac858'
+                },
+                lineStyle: {
+                    width: 3
+                },
+                symbol: 'circle',
+                symbolSize: 8
+            },
+            {
+                name: '平均收藏量',
+                type: 'line',
+                yAxisIndex: 1,
+                data: marketData.avgFlower || [],
+                itemStyle: {
+                    color: '#ee6666'
+                },
+                lineStyle: {
+                    width: 3
+                },
+                symbol: 'circle',
+                symbolSize: 8
+            }
+        ]
+    };
+
+    marketOption && marketChart.setOption(marketOption);
+
+    // 2. 主题受欢迎程度散点图
+    var popularityChartDom = document.getElementById('popularityChart');
+    var popularityChart = echarts.init(popularityChartDom);
+
+    function prepareScatterData() {
+        var themes = popularityData.themes || [];
+        var maleData = popularityData.maleData || [];
+        var femaleData = popularityData.femaleData || [];
+
+        var maleScatter = [];
+        var femaleScatter = [];
+
+        for (var i = 0; i < themes.length; i++) {
+            if (maleData[i] && maleData[i].length >= 2) {
+                maleScatter.push([
+                    maleData[i][0], // 作品数量
+                    maleData[i][1], // 平均收藏量
+                    themes[i],
+                    '男频'
+                ]);
+            }
+            if (femaleData[i] && femaleData[i].length >= 2) {
+                femaleScatter.push([
+                    femaleData[i][0],
+                    femaleData[i][1],
+                    themes[i],
+                    '女频'
+                ]);
+            }
+        }
+
+        return {maleScatter: maleScatter, femaleScatter: femaleScatter};
+    }
+
+    var scatterData = prepareScatterData();
+
+    var popularityOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        tooltip: {
+            formatter: function (params) {
+                return params.value[2] + ' (' + params.value[3] + ')<br/>' +
+                    '作品数量: ' + params.value[0] + ' 部<br/>' +
+                    '平均收藏: ' + params.value[1];
+            }
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '20%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            name: '作品数量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '平均收藏量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'scatter',
+                data: scatterData.maleScatter,
+                symbolSize: function (data) {
+                    return Math.sqrt(data[0]) * 2; // 大小基于作品数量的平方根
+                },
+                itemStyle: {
+                    color: '#5470c6',
+                    opacity: 0.8
+                },
+                emphasis: {
+                    scale: true
+                }
+            },
+            {
+                name: '女频',
+                type: 'scatter',
+                data: scatterData.femaleScatter,
+                symbolSize: function (data) {
+                    return Math.sqrt(data[0]) * 2;
+                },
+                itemStyle: {
+                    color: '#91cc75',
+                    opacity: 0.8
+                },
+                emphasis: {
+                    scale: true
+                }
+            }
+        ]
+    };
+
+    popularityOption && popularityChart.setOption(popularityOption);
+
+    // 3. 主题字数分布堆叠柱状图
+    var wordLengthChartDom = document.getElementById('wordLengthChart');
+    var wordLengthChart = echarts.init(wordLengthChartDom);
+
+    var wordLengthOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: wordLengthData.lengthCategories || [],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '20%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: wordLengthData.themes || [],
+            axisLabel: {
+                color: '#9a9a9a',
+                rotate: 45
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '作品数量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        series: (function () {
+            var series = [];
+            var lengthCategories = wordLengthData.lengthCategories || [];
+            var lengthData = wordLengthData.lengthData || [];
+            var themes = wordLengthData.themes || [];
+
+            // 定义颜色
+            var colors = ['#73DDFF', '#73ACFF', '#5b50f0', '#592de8'];
+
+            // 转置数据：从按主题分组转为按字数类别分组
+            var categoryData = [];
+            for (var i = 0; i < lengthCategories.length; i++) {
+                categoryData[i] = [];
+                for (var j = 0; j < themes.length; j++) {
+                    categoryData[i].push(lengthData[j] ? lengthData[j][i] || 0 : 0);
+                }
+            }
+
+            for (var i = 0; i < lengthCategories.length; i++) {
+                series.push({
+                    name: lengthCategories[i],
+                    type: 'bar',
+                    stack: 'total',
+                    data: categoryData[i] || [],
+                    itemStyle: {
+                        color: colors[i % colors.length]
+                    }
+                });
+            }
+            return series;
+        })()
+    };
+
+    wordLengthOption && wordLengthChart.setOption(wordLengthOption);
+
+    // 窗口大小改变时重新调整所有图表
+    window.addEventListener('resize', function () {
+        myChart.resize();
+        myChart2.resize();
+        myChart3.resize();
+        marketChart.resize();
+        popularityChart.resize();
+        wordLengthChart.resize();
+    });
     /*]]>*/
-  </script>
+</script>
 
 </body>
 </html>

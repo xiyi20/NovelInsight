@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>频道对比 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" th:href="@{/assets/demo/demo.css}"/>
+</head>
+
+<body class="">
+<div class="wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
+        <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+    </div>
+
+    <div class="main-panel">
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button class="navbar-toggler" type="button">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:void(0)">频道对比分析</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/app/logout}">
+                                <i class="tim-icons icon-button-power"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 显示错误/成功消息 -->
+            <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+                <span th:text="${errorMessage}"></span>
+            </div>
+            <div class="alert alert-success" role="alert" th:if="${successMessage}">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div class="row">
+                <h3 style="margin-left: 15px">频道对比分析</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">主题分布对比</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="themeDistributionChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">频道收藏趋势对比</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="flowerTrendChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">频道综合指标对比</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="metricsRadarChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <ul class="nav">
+                </ul>
+                <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+<script th:src="@{/assets/echarts.js}"></script>
+
+<!-- 内联JavaScript，使用Thymeleaf变量 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        $().ready(function () {
+            $sidebar = $('.sidebar');
+            $navbar = $('.navbar');
+            $main_panel = $('.main-panel');
+            $full_page = $('.full-page');
+            $sidebar_responsive = $('body > .navbar-collapse');
+            sidebar_mini_active = true;
+            white_color = false;
+            window_width = $(window).width();
+            fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+            $('.fixed-plugin a').click(function (event) {
+                if ($(this).hasClass('switch-trigger')) {
+                    if (event.stopPropagation) {
+                        event.stopPropagation();
+                    } else if (window.event) {
+                        window.event.cancelBubble = true;
+                    }
+                }
+            });
+
+            $('.fixed-plugin .background-color span').click(function () {
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                var new_color = $(this).data('color');
+                if ($sidebar.length != 0) {
+                    $sidebar.attr('data', new_color);
+                }
+                if ($main_panel.length != 0) {
+                    $main_panel.attr('data', new_color);
+                }
+                if ($full_page.length != 0) {
+                    $full_page.attr('filter-color', new_color);
+                }
+                if ($sidebar_responsive.length != 0) {
+                    $sidebar_responsive.attr('data', new_color);
+                }
+            });
+
+            $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function () {
+                var $btn = $(this);
+                if (sidebar_mini_active == true) {
+                    $('body').removeClass('sidebar-mini');
+                    sidebar_mini_active = false;
+                    blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+                } else {
+                    $('body').addClass('sidebar-mini');
+                    sidebar_mini_active = true;
+                    blackDashboard.showSidebarMessage('Sidebar mini activated...');
+                }
+                var simulateWindowResize = setInterval(function () {
+                    window.dispatchEvent(new Event('resize'));
+                }, 180);
+                setTimeout(function () {
+                    clearInterval(simulateWindowResize);
+                }, 1000);
+            });
+
+            $('.switch-change-color input').on("switchChange.bootstrapSwitch", function () {
+                var $btn = $(this);
+                if (white_color == true) {
+                    $('body').addClass('change-background');
+                    setTimeout(function () {
+                        $('body').removeClass('change-background');
+                        $('body').removeClass('white-content');
+                    }, 900);
+                    white_color = false;
+                } else {
+                    $('body').addClass('change-background');
+                    setTimeout(function () {
+                        $('body').removeClass('change-background');
+                        $('body').addClass('white-content');
+                    }, 900);
+                    white_color = true;
+                }
+            });
+
+            $('.light-badge').click(function () {
+                $('body').addClass('white-content');
+            });
+            $('.dark-badge').click(function () {
+                $('body').removeClass('white-content');
+            });
+        });
+    });
+    /*]]>*/
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        demo.initDashboardPageCharts();
+    });
+    /*]]>*/
+</script>
+
+<!-- ECharts图表脚本 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // 从Thymeleaf获取数据
+    var themeData = /*[[${themeData}]]*/ {};
+    var flowerData = /*[[${flowerData}]]*/ {};
+    var metricsData = /*[[${metricsData}]]*/ {};
+
+    // 1. 主题分布对比图
+    var themeChartDom = document.getElementById('themeDistributionChart');
+    var themeChart = echarts.init(themeChartDom);
+
+    var themeOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: function (params) {
+                var result = params[0].name + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                    result += params[i].seriesName + ': ' + params[i].value + ' 部<br/>';
+                }
+                return result;
+            }
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '20%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: themeData.themes || [],
+            axisLabel: {
+                color: '#9a9a9a',
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '作品数量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'bar',
+                data: themeData.maleData || [],
+                itemStyle: {
+                    color: '#5470c6'
+                },
+                barWidth: '30%'
+            },
+            {
+                name: '女频',
+                type: 'bar',
+                data: themeData.femaleData || [],
+                itemStyle: {
+                    color: '#91cc75'
+                },
+                barWidth: '30%'
+            }
+        ]
+    };
+
+    themeOption && themeChart.setOption(themeOption);
+
+    // 2. 收藏趋势对比图（堆叠柱状图）
+    var flowerChartDom = document.getElementById('flowerTrendChart');
+    var flowerChart = echarts.init(flowerChartDom);
+
+    var flowerOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: flowerData.flowerLevels || [],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '20%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: flowerData.categories || [],
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '作品数量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        series: (function () {
+            var series = [];
+            var flowerLevels = flowerData.flowerLevels || [];
+            var maleData = flowerData.maleData || [];
+            var femaleData = flowerData.femaleData || [];
+
+            // 定义颜色
+            var colors = ['#73DDFF', '#73ACFF', '#5b50f0', '#592de8'];
+
+            for (var i = 0; i < flowerLevels.length; i++) {
+                series.push({
+                    name: flowerLevels[i],
+                    type: 'bar',
+                    stack: 'total',
+                    data: [maleData[i] || 0, femaleData[i] || 0],
+                    itemStyle: {
+                        color: colors[i % colors.length]
+                    }
+                });
+            }
+            return series;
+        })()
+    };
+
+    flowerOption && flowerChart.setOption(flowerOption);
+
+    // 改进的归一化函数 - 使用对数变换避免极端值
+    function normalizeData(values) {
+        if (!values || values.length === 0) return [];
+
+        var maxValues = [];
+        for (var i = 0; i < values.length; i++) {
+            var maleVal = metricsData.maleValues[i] || 0;
+            var femaleVal = metricsData.femaleValues[i] || 0;
+            maxValues.push(Math.max(maleVal, femaleVal));
+        }
+
+        // 归一化到0-100
+        var normalized = [];
+        for (var i = 0; i < values.length; i++) {
+            if (maxValues[i] === 0) {
+                normalized.push(0);
+            } else {
+                normalized.push(Math.min(100, (values[i] / maxValues[i]) * 100));
+            }
+        }
+        return normalized;
+    }
+
+
+    // 归一化函数保留，但当前使用原始数据直接比较
+
+    // 3. 频道综合指标对比（分组条形图）
+    var barChartDom = document.getElementById('metricsRadarChart');
+    var barChart = echarts.init(barChartDom);
+
+    // 准备数据
+    var indicators = metricsData.indicators || [];
+    var maleValues = metricsData.maleValues || [];
+    var femaleValues = metricsData.femaleValues || [];
+
+    // 为对数刻度准备图表数据：处理0值和负值
+    var maleChartValues = [];
+    var femaleChartValues = [];
+
+    for (var i = 0; i < maleValues.length; i++) {
+        var val = maleValues[i];
+        // 确保没有0值或负值，对数刻度需要正数
+        if (val <= 0) {
+            maleChartValues.push(0.1); // 使用小的正数
+        } else {
+            maleChartValues.push(val);
+        }
+    }
+
+    for (var i = 0; i < femaleValues.length; i++) {
+        var val = femaleValues[i];
+        if (val <= 0) {
+            femaleChartValues.push(0.1);
+        } else {
+            femaleChartValues.push(val);
+        }
+    }
+
+    // 格式化函数 - 更新以适应新指标
+    function formatValue(val, indicatorName) {
+        // 根据指标名称判断类型
+        if (indicatorName === '平均热度' || indicatorName === '最高热度') {
+            // 热度值是0-10的小数
+            return val.toFixed(2);
+        } else if (indicatorName === '作品数量') {
+            // 作品数量是整数
+            return val.toLocaleString() + ' 部';
+        } else if (indicatorName.includes('字数') || indicatorName.includes('阅读量') ||
+            indicatorName.includes('收藏量') || indicatorName.includes('打赏')) {
+            // 这些是大数字，使用标准格式化
+            if (val >= 100000000) {
+                return (val / 100000000).toFixed(1) + '亿';
+            } else if (val >= 10000) {
+                return (val / 10000).toFixed(1) + '万';
+            } else if (val >= 1000) {
+                return (val / 1000).toFixed(1) + '千';
+            } else {
+                return val.toLocaleString();
+            }
+        } else {
+            // 默认格式化
+            return val.toLocaleString();
+        }
+    }
+
+    var barOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: function (params) {
+                var result = params[0].name + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                    var dataIndex = params[i].dataIndex;
+                    var seriesIndex = params[i].seriesIndex;
+                    var originalValue;
+
+                    // 根据系列索引获取原始值
+                    if (seriesIndex === 0) {
+                        // 男频系列
+                        originalValue = maleValues[dataIndex] || 0;
+                    } else {
+                        // 女频系列
+                        originalValue = femaleValues[dataIndex] || 0;
+                    }
+
+                    var color = params[i].color;
+                    result += '<span style="display:inline-block;width:12px;height:12px;background:' + color + ';border-radius:50%;margin-right:5px"></span>';
+                    result += params[i].seriesName + ': ' + formatValue(originalValue, params[0].name) + '<br/>';
+                }
+                return result;
+            },
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            textStyle: {
+                color: '#fff',
+                fontSize: 12
+            },
+            extraCssText: 'box-shadow: 0 0 10px rgba(0,0,0,0.5);'
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        grid: {
+            left: '15%', // 为Y轴标签留出更多空间
+            right: '5%',
+            bottom: '5%',
+            top: '20%',
+            containLabel: false
+        },
+        xAxis: {
+            type: 'log',
+            logBase: 10,
+            name: '数值（对数刻度）',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a',
+                formatter: function (value) {
+                    // 对数刻度下，值已经是压缩后的，显示更友好的格式
+                    if (value >= 1000000) {
+                        return (value / 1000000).toFixed(1) + 'M';
+                    } else if (value >= 1000) {
+                        return (value / 1000).toFixed(1) + 'K';
+                    } else if (value < 1) {
+                        return value.toFixed(2); // 小于1的值显示两位小数
+                    } else {
+                        return value.toFixed(1);
+                    }
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: indicators,
+            axisLabel: {
+                color: '#9a9a9a',
+                fontSize: 11 // 减小字体以容纳更多指标
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'bar',
+                data: maleChartValues,
+                itemStyle: {
+                    color: '#5470c6'
+                },
+                barWidth: '35%',
+                label: {
+                    show: false // 默认不显示标签，避免拥挤
+                }
+            },
+            {
+                name: '女频',
+                type: 'bar',
+                data: femaleChartValues,
+                itemStyle: {
+                    color: '#91cc75'
+                },
+                barWidth: '35%',
+                label: {
+                    show: false
+                }
+            }
+        ]
+    };
+
+    barOption && barChart.setOption(barOption);
+
+    // 窗口大小改变时重新调整图表
+    window.addEventListener('resize', function () {
+        themeChart.resize();
+        flowerChart.resize();
+        barChart.resize();
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

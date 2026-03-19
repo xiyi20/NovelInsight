@@ -1,231 +1,297 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-  <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
-  <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
-  <title>作者分析 - 小说数据分析可视化系统</title>
-  <!-- CSS Files -->
-  <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" th:href="@{/assets/demo/demo.css}" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" th:href="@{/assets/img/favicon.png}" type="image/png">
+    <title>作者分析 - 小说数据分析可视化系统</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/css/nucleo-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/black-dashboard.css}"/>
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" th:href="@{/assets/demo/demo.css}"/>
 </head>
 
 <body class="">
-  <div class="wrapper">
+<div class="wrapper">
     <!-- 侧边栏 -->
     <div class="sidebar" th:replace="~{fragments/sidebar :: sidebar}">
-      <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
+        <!-- 侧边栏内容将通过Thymeleaf片段加载 -->
     </div>
 
     <div class="main-panel">
-      <!-- 导航栏 -->
-      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <div class="navbar-toggle d-inline">
-              <button class="navbar-toggler" type="button">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </button>
-            </div>
-            <a class="navbar-brand" href="javascript:void(0)">作者分析</a>
-          </div>
-          <div class="collapse navbar-collapse" id="navigation">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" th:href="@{/app/logout}">
-                  <i class="tim-icons icon-button-power"></i> 退出
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <!-- 内容区域 -->
-      <div class="content">
-        <!-- 显示错误/成功消息 -->
-        <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
-          <span th:text="${errorMessage}"></span>
-        </div>
-        <div class="alert alert-success" role="alert" th:if="${successMessage}">
-          <span th:text="${successMessage}"></span>
-        </div>
-        <div class="row">
-          <h3 style="margin-left: 15px">作者分析</h3>
-        </div>
-        <div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks" style="height: 550px">
-              <div class="card-header">
-                <h4 class="title d-inline">作者日更分析</h4>
-                <div class="dropdown">
-                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button class="navbar-toggler" type="button">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:void(0)">作者分析</a>
                 </div>
-              </div>
-              <div class="card-body">
-                <div id="mainA" style="width: 100%; height: 470px"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks" style="height: 550px">
-              <div class="card-header">
-                <h4 class="title d-inline">作者最大字数分析</h4>
-                <div class="dropdown">
-                  <div aria-labelledby="dropdownMenuLink" class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="nav-link">欢迎，<span th:text="${userInfo.username}">用户</span></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/app/logout}">
+                                <i class="tim-icons icon-button-power"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-              </div>
-              <div class="card-body">
-                <div id="mainB" style="width: 100%; height: 470px"></div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
+        </nav>
 
-      <footer class="footer">
-        <div class="container-fluid">
-          <ul class="nav">
-          </ul>
-          <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 显示错误/成功消息 -->
+            <div class="alert alert-danger" role="alert" th:if="${errorMessage}">
+                <span th:text="${errorMessage}"></span>
+            </div>
+            <div class="alert alert-success" role="alert" th:if="${successMessage}">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div class="row">
+                <h3 style="margin-left: 15px">作者分析</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card card-tasks">
+                        <div class="card-header">
+                            <h4 class="title d-inline">高产作者TOP榜</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="topAuthorsTable" style="width: 100%; overflow-x: auto;">
+                                <table class="table table-hover" id="authorsTable">
+                                    <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>作者</th>
+                                        <th>频道</th>
+                                        <th>作品数量</th>
+                                        <th>总阅读量</th>
+                                        <th>总收藏量</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- 表格数据将通过JavaScript动态填充 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">作者日更分析</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="mainA" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">作者字数Top10分析</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="mainB" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">作者等级分布对比</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="levelDistributionChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">创作天数分析</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="channelComparisonChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">作者创作效率分析</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="efficiencyAnalysisChart" style="width: 100%; height: 470px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card card-tasks" style="height: 550px">
+                        <div class="card-header">
+                            <h4 class="title d-inline">作者阅读收藏关系</h4>
+
+                        </div>
+                        <div class="card-body">
+                            <div id="readFlowerChart" style="width: 100%; height: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </footer>
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <ul class="nav">
+                </ul>
+                <div class="copyright">Copyright &copy; 2026.小说数据分析与可视化系统.</div>
+            </div>
+        </footer>
     </div>
-  </div>
+</div>
 
-  <!-- Core JS Files -->
-  <script th:src="@{/assets/js/core/jquery.min.js}"></script>
-  <script th:src="@{/assets/js/core/popper.min.js}"></script>
-  <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
-  <script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
-  <!-- Chart JS -->
-  <script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
-  <!-- Notifications Plugin -->
-  <script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
-  <!-- Control Center for Black Dashboard -->
-  <script th:src="@{/assets/js/black-dashboard.min.js}"></script>
-  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-  <script th:src="@{/assets/demo/demo.js}"></script>
-  <script th:src="@{/assets/echarts.js}"></script>
+<!-- Core JS Files -->
+<script th:src="@{/assets/js/core/jquery.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.jquery.min.js}"></script>
+<!-- Chart JS -->
+<script th:src="@{/assets/js/plugins/chartjs.min.js}"></script>
+<!-- Notifications Plugin -->
+<script th:src="@{/assets/js/plugins/bootstrap-notify.js}"></script>
+<!-- Control Center for Black Dashboard -->
+<script th:src="@{/assets/js/black-dashboard.min.js}"></script>
+<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+<script th:src="@{/assets/demo/demo.js}"></script>
+<script th:src="@{/assets/echarts.js}"></script>
 
-  <!-- 内联JavaScript，使用Thymeleaf变量 -->
-  <script th:inline="javascript">
+<!-- 内联JavaScript，使用Thymeleaf变量 -->
+<script th:inline="javascript">
     /*<![CDATA[*/
-    $(document).ready(function() {
-      $().ready(function() {
-        $sidebar = $('.sidebar');
-        $navbar = $('.navbar');
-        $main_panel = $('.main-panel');
-        $full_page = $('.full-page');
-        $sidebar_responsive = $('body > .navbar-collapse');
-        sidebar_mini_active = true;
-        white_color = false;
-        window_width = $(window).width();
-        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-        $('.fixed-plugin a').click(function(event) {
-          if ($(this).hasClass('switch-trigger')) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            } else if (window.event) {
-              window.event.cancelBubble = true;
-            }
-          }
-        });
-
-        $('.fixed-plugin .background-color span').click(function() {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
-          var new_color = $(this).data('color');
-          if ($sidebar.length != 0) {
-            $sidebar.attr('data', new_color);
-          }
-          if ($main_panel.length != 0) {
-            $main_panel.attr('data', new_color);
-          }
-          if ($full_page.length != 0) {
-            $full_page.attr('filter-color', new_color);
-          }
-          if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.attr('data', new_color);
-          }
-        });
-
-        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
-          var $btn = $(this);
-          if (sidebar_mini_active == true) {
-            $('body').removeClass('sidebar-mini');
-            sidebar_mini_active = false;
-            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
-          } else {
-            $('body').addClass('sidebar-mini');
+    $(document).ready(function () {
+        $().ready(function () {
+            $sidebar = $('.sidebar');
+            $navbar = $('.navbar');
+            $main_panel = $('.main-panel');
+            $full_page = $('.full-page');
+            $sidebar_responsive = $('body > .navbar-collapse');
             sidebar_mini_active = true;
-            blackDashboard.showSidebarMessage('Sidebar mini activated...');
-          }
-          var simulateWindowResize = setInterval(function() {
-            window.dispatchEvent(new Event('resize'));
-          }, 180);
-          setTimeout(function() {
-            clearInterval(simulateWindowResize);
-          }, 1000);
-        });
-
-        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
-          var $btn = $(this);
-          if (white_color == true) {
-            $('body').addClass('change-background');
-            setTimeout(function() {
-              $('body').removeClass('change-background');
-              $('body').removeClass('white-content');
-            }, 900);
             white_color = false;
-          } else {
-            $('body').addClass('change-background');
-            setTimeout(function() {
-              $('body').removeClass('change-background');
-              $('body').addClass('white-content');
-            }, 900);
-            white_color = true;
-          }
-        });
+            window_width = $(window).width();
+            fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-        $('.light-badge').click(function() {
-          $('body').addClass('white-content');
+            $('.fixed-plugin a').click(function (event) {
+                if ($(this).hasClass('switch-trigger')) {
+                    if (event.stopPropagation) {
+                        event.stopPropagation();
+                    } else if (window.event) {
+                        window.event.cancelBubble = true;
+                    }
+                }
+            });
+
+            $('.fixed-plugin .background-color span').click(function () {
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                var new_color = $(this).data('color');
+                if ($sidebar.length != 0) {
+                    $sidebar.attr('data', new_color);
+                }
+                if ($main_panel.length != 0) {
+                    $main_panel.attr('data', new_color);
+                }
+                if ($full_page.length != 0) {
+                    $full_page.attr('filter-color', new_color);
+                }
+                if ($sidebar_responsive.length != 0) {
+                    $sidebar_responsive.attr('data', new_color);
+                }
+            });
+
+            $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function () {
+                var $btn = $(this);
+                if (sidebar_mini_active == true) {
+                    $('body').removeClass('sidebar-mini');
+                    sidebar_mini_active = false;
+                    blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+                } else {
+                    $('body').addClass('sidebar-mini');
+                    sidebar_mini_active = true;
+                    blackDashboard.showSidebarMessage('Sidebar mini activated...');
+                }
+                var simulateWindowResize = setInterval(function () {
+                    window.dispatchEvent(new Event('resize'));
+                }, 180);
+                setTimeout(function () {
+                    clearInterval(simulateWindowResize);
+                }, 1000);
+            });
+
+            $('.switch-change-color input').on("switchChange.bootstrapSwitch", function () {
+                var $btn = $(this);
+                if (white_color == true) {
+                    $('body').addClass('change-background');
+                    setTimeout(function () {
+                        $('body').removeClass('change-background');
+                        $('body').removeClass('white-content');
+                    }, 900);
+                    white_color = false;
+                } else {
+                    $('body').addClass('change-background');
+                    setTimeout(function () {
+                        $('body').removeClass('change-background');
+                        $('body').addClass('white-content');
+                    }, 900);
+                    white_color = true;
+                }
+            });
+
+            $('.light-badge').click(function () {
+                $('body').addClass('white-content');
+            });
+            $('.dark-badge').click(function () {
+                $('body').removeClass('white-content');
+            });
         });
-        $('.dark-badge').click(function() {
-          $('body').removeClass('white-content');
-        });
-      });
     });
     /*]]>*/
-  </script>
+</script>
 
-  <script th:inline="javascript">
+<script th:inline="javascript">
     /*<![CDATA[*/
-    $(document).ready(function() {
-      demo.initDashboardPageCharts();
+    $(document).ready(function () {
+        demo.initDashboardPageCharts();
     });
     /*]]>*/
-  </script>
+</script>
 
-  <!-- ECharts图表脚本 -->
-  <script th:inline="javascript">
+<!-- ECharts图表脚本 -->
+<script th:inline="javascript">
     /*<![CDATA[*/
     // 第一个图表：作者日更分析
     var chartDomA = document.getElementById('mainA');
@@ -233,150 +299,782 @@
     var optionA;
 
     optionA = {
-      title: {
-        text: '作者日更分析',
-        textStyle: {
-          align: 'center',
-          color: '#fff',
-          fontSize: 20,
+        title: {
+            textStyle: {
+                align: 'center',
+                color: '#fff',
+                fontSize: 20,
+            },
+            top: '5%',
+            left: 'center',
         },
-        top: '5%',
-        left: 'center',
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      grid: {
-        top: '15%',
-        left: '5%',
-        right: '5%',
-        bottom: '15%',
-      },
-      xAxis: [{
-        type: 'category',
-        data: /*[[${xLine1}]]*/ [],
-        axisLabel: {
-          color: '#9a9a9a',
-          rotate: 45
+        tooltip: {
+            trigger: 'axis'
         },
-        axisLine: {
-          show: true
+        grid: {
+            top: '15%',
+            left: '5%',
+            right: '5%',
+            bottom: '15%',
         },
-        axisTick: {
-          show: false
-        },
-      }],
-      yAxis: [{
-        type: 'value',
-        min: 0,
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.1)'
-          }
-        },
-        axisLabel: {
-          formatter: '{value}',
-          color: '#9a9a9a'
-        },
-      }],
-      series: [{
-        name: '日更字数',
-        type: 'line',
-        smooth: true,
-        data: /*[[${yLine1}]]*/ [],
-        itemStyle: {
-          color: '#6c50f3'
-        },
-        lineStyle: {
-          width: 3
-        },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-            offset: 0,
-            color: 'rgba(108, 80, 243, 0.5)'
-          }, {
-            offset: 1,
-            color: 'rgba(108, 80, 243, 0.1)'
-          }])
-        },
-        symbol: 'circle',
-        symbolSize: 8,
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#6c50f3',
-          }
-        },
-      }]
+        xAxis: [{
+            type: 'category',
+            data: /*[[${xLine1}]]*/ [],
+            axisLabel: {
+                color: '#9a9a9a',
+                rotate: 45
+            },
+            axisLine: {
+                show: true
+            },
+            axisTick: {
+                show: false
+            },
+        }],
+        yAxis: [{
+            type: 'value',
+            min: 0,
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            },
+            axisLabel: {
+                formatter: '{value}',
+                color: '#9a9a9a'
+            },
+        }],
+        series: [{
+            name: '日更字数',
+            type: 'line',
+            smooth: true,
+            data: /*[[${yLine1}]]*/ [],
+            itemStyle: {
+                color: '#6c50f3'
+            },
+            lineStyle: {
+                width: 3
+            },
+            areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(108, 80, 243, 0.5)'
+                }, {
+                    offset: 1,
+                    color: 'rgba(108, 80, 243, 0.1)'
+                }])
+            },
+            symbol: 'circle',
+            symbolSize: 8,
+            label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                    color: '#6c50f3',
+                }
+            },
+        }]
     };
 
     optionA && myChartA.setOption(optionA);
 
-    // 第二个图表：作者最大字数饼图
+    // 第二个图表：作者字数Top10旭日图
     var chartDomB = document.getElementById('mainB');
     var myChartB = echarts.init(chartDomB);
     var optionB;
 
     var colorList = ['#73DDFF', '#73ACFF', '#5b50f0', '#592de8', '#e82ddd', '#9E87FF', '#58D5FF', '#FDD475', '#FF9F7F', '#FB7293'];
 
-    optionB = {
-      title: {
-        text: '作者最大字数分布',
-        textStyle: {
-          fontSize: 18,
-          color: '#9a9a9a'
-        },
-        left: 'center',
-        top: '5%'
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c}字 ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        top: '15%',
-        textStyle: {
-          color: '#9a9a9a'
-        }
-      },
-      series: [{
-        name: '最大字数',
-        type: 'pie',
-        radius: ['40%', '70%'],
-        center: ['50%', '55%'],
-        avoidLabelOverlap: true,
+    // 准备旭日图数据：从后端获取的pieData转换为旭日图格式
+    var pieData = /*[[${pieData}]]*/ [];
+
+    // 构建旭日图数据结构：根节点 + 作者节点
+    var sunburstData = [];
+
+    // 计算总字数用于百分比显示
+    var totalWords = 0;
+    for (var i = 0; i < pieData.length; i++) {
+        totalWords += pieData[i].value || 0;
+    }
+
+    // 创建根节点
+    var rootNode = {
+        name: '作者字数Top10',
         itemStyle: {
-          borderRadius: 10,
-          borderColor: '#fff',
-          borderWidth: 2
+            color: '#6c50f3'
         },
-        label: {
-          show: true,
-          formatter: '{b}: {c}字',
-          color: '#9a9a9a'
+        children: []
+    };
+
+    // 添加作者子节点
+    for (var i = 0; i < pieData.length; i++) {
+        var authorData = pieData[i];
+        var percentage = totalWords > 0 ? ((authorData.value / totalWords) * 100).toFixed(1) : 0;
+
+        rootNode.children.push({
+            name: authorData.name,
+            value: authorData.value,
+            percentage: percentage,
+            itemStyle: {
+                color: colorList[i % colorList.length]
+            }
+        });
+    }
+
+    sunburstData.push(rootNode);
+
+    optionB = {
+        title: {
+            textStyle: {
+                fontSize: 18,
+                color: '#fff'
+            },
+            left: 'center',
+            top: '5%'
         },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: 18,
-            fontWeight: 'bold'
-          }
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                var result = params.name;
+                if (params.data.value !== undefined) {
+                    result += '<br/>字数: ' + params.data.value.toLocaleString() + ' 字';
+                    if (params.data.percentage !== undefined) {
+                        result += '<br/>占比: ' + params.data.percentage + '%';
+                    }
+                }
+                return result;
+            }
         },
-        labelLine: {
-          show: true
-        },
-        data: /*[[${pieData}]]*/ [],
-        color: colorList
-      }]
+        series: [{
+            name: '',
+            type: 'sunburst',
+            data: sunburstData,
+            radius: ['15%', '85%'],
+            center: ['50%', '55%'],
+            sort: 'desc', // 按值降序排列
+            levels: [
+                {}, // 第一层：根节点
+                {
+                    r0: '20%',
+                    r: '40%',
+                    itemStyle: {
+                        borderWidth: 2,
+                        borderColor: '#121212'
+                    },
+                    label: {
+                        rotate: 'tangential'
+                    }
+                },
+                {
+                    r0: '40%',
+                    r: '80%',
+                    label: {
+                        align: 'right'
+                    }
+                }
+            ],
+            itemStyle: {
+                borderColor: '#121212',
+                borderWidth: 2
+            },
+            emphasis: {
+                focus: 'ancestor',
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            },
+            label: {
+                show: true,
+                formatter: function (params) {
+                    // 只显示作者名，省略根节点标签
+                    if (params.data.name === '作者字数Top10') {
+                        return params.data.name;
+                    }
+                    // 截断过长的作者名
+                    var name = params.data.name;
+                    if (name.length > 6) {
+                        return name.substring(0, 5) + '...';
+                    }
+                    return name;
+                },
+                color: '#fff',
+                fontSize: 12
+            }
+        }]
     };
 
     optionB && myChartB.setOption(optionB);
+
+    // ==============================
+    // 新增作者分析图表配置
+    // ==============================
+
+    // 1. 作者等级分布对比图
+    var levelDistributionChartDom = document.getElementById('levelDistributionChart');
+    var levelDistributionChart = echarts.init(levelDistributionChartDom);
+    var levelDistributionOption;
+
+    var levelsData = /*[[${levelDistributionData.levels}]]*/ [];
+    var maleLevelData = /*[[${levelDistributionData.maleData}]]*/ [];
+    var femaleLevelData = /*[[${levelDistributionData.femaleData}]]*/ [];
+
+    levelDistributionOption = {
+        title: {
+            left: 'center',
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 30
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: levelsData,
+            axisLabel: {
+                color: '#9a9a9a',
+                rotate: 45
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#9a9a9a'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '作者数量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#9a9a9a'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'bar',
+                data: maleLevelData,
+                itemStyle: {
+                    color: '#5470c6'
+                },
+                emphasis: {
+                    focus: 'series'
+                }
+            },
+            {
+                name: '女频',
+                type: 'bar',
+                data: femaleLevelData,
+                itemStyle: {
+                    color: '#91cc75'
+                },
+                emphasis: {
+                    focus: 'series'
+                }
+            }
+        ]
+    };
+
+    levelDistributionOption && levelDistributionChart.setOption(levelDistributionOption);
+
+    // 2. 作者等级创作天数分析图
+    var channelComparisonChartDom = document.getElementById('channelComparisonChart');
+    var channelComparisonChart = echarts.init(channelComparisonChartDom);
+
+    var indicatorsData = /*[[${channelComparisonData.indicators}]]*/ [];
+    var maleComparisonValues = /*[[${channelComparisonData.maleValues}]]*/ [];
+    var femaleComparisonValues = /*[[${channelComparisonData.femaleValues}]]*/ [];
+
+    // 准备数据 - 作者等级创作天数
+    var maleChartValues = maleComparisonValues;
+    var femaleChartValues = femaleComparisonValues;
+
+    // 格式化函数 - 作者等级创作天数专用
+    function formatComparisonValue(val) {
+        // 创作天数格式化
+        if (val >= 1000) {
+            return (val / 1000).toFixed(1) + ' 千天';
+        } else {
+            return val.toFixed(1) + ' 天';
+        }
+    }
+
+    var channelComparisonOption = {
+        title: {
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            },
+            left: 'center',
+            top: 10
+        },
+        subtitle: {
+            text: '按作者等级显示平均创作天数',
+            left: 'center',
+            top: 40,
+            textStyle: {
+                color: '#9a9a9a',
+                fontSize: 12
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: function (params) {
+                var result = params[0].name + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                    var dataIndex = params[i].dataIndex;
+                    var seriesIndex = params[i].seriesIndex;
+                    var originalValue;
+
+                    // 根据系列索引获取原始值
+                    if (seriesIndex === 0) {
+                        // 男频系列
+                        originalValue = maleComparisonValues[dataIndex] || 0;
+                    } else {
+                        // 女频系列
+                        originalValue = femaleComparisonValues[dataIndex] || 0;
+                    }
+
+                    var color = params[i].color;
+                    result += '<span style="display:inline-block;width:12px;height:12px;background:' + color + ';border-radius:50%;margin-right:5px"></span>';
+                    result += params[i].seriesName + ': ' + formatComparisonValue(originalValue) + '<br/>';
+                }
+                return result;
+            },
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            textStyle: {
+                color: '#fff',
+                fontSize: 12
+            },
+            extraCssText: 'box-shadow: 0 0 10px rgba(0,0,0,0.5);'
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 40
+        },
+        grid: {
+            left: '15%',
+            right: '5%',
+            bottom: '5%',
+            top: '20%',
+            containLabel: false
+        },
+        xAxis: {
+            type: 'value',
+            name: '创作天数',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a',
+                formatter: function (value) {
+                    // 创作天数格式化
+                    if (value >= 1000) {
+                        return (value / 1000).toFixed(1) + ' 千天';
+                    } else {
+                        return value.toFixed(0) + ' 天';
+                    }
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: indicatorsData,
+            axisLabel: {
+                color: '#9a9a9a',
+                fontSize: 11
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(107,107,107,0.37)'
+                }
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'bar',
+                data: maleChartValues,
+                itemStyle: {
+                    color: '#5470c6'
+                },
+                barWidth: '35%',
+                label: {
+                    show: false
+                }
+            },
+            {
+                name: '女频',
+                type: 'bar',
+                data: femaleChartValues,
+                itemStyle: {
+                    color: '#91cc75'
+                },
+                barWidth: '35%',
+                label: {
+                    show: false
+                }
+            }
+        ]
+    };
+
+    channelComparisonOption && channelComparisonChart.setOption(channelComparisonOption);
+
+    // 3. 作者创作效率分析堆叠柱状图
+    var efficiencyAnalysisChartDom = document.getElementById('efficiencyAnalysisChart');
+    var efficiencyAnalysisChart = echarts.init(efficiencyAnalysisChartDom);
+    var efficiencyAnalysisOption;
+
+    var experienceLevels = /*[[${efficiencyAnalysisData.experienceLevels}]]*/ [];
+    var maleEfficiencyData = /*[[${efficiencyAnalysisData.maleData}]]*/ [];
+    var femaleEfficiencyData = /*[[${efficiencyAnalysisData.femaleData}]]*/ [];
+
+    efficiencyAnalysisOption = {
+        title: {
+            left: 'center',
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: function (params) {
+                var result = params[0].name + '<br/>';
+                params.forEach(function (item) {
+                    result += item.seriesName + ': ' + item.value + ' 位作者<br/>';
+                });
+                return result;
+            }
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 30
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: experienceLevels,
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#9a9a9a'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '作者数量',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            axisLabel: {
+                color: '#9a9a9a'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#9a9a9a'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'bar',
+                stack: 'total',
+                data: maleEfficiencyData,
+                itemStyle: {
+                    color: '#5470c6'
+                },
+                emphasis: {
+                    focus: 'series'
+                }
+            },
+            {
+                name: '女频',
+                type: 'bar',
+                stack: 'total',
+                data: femaleEfficiencyData,
+                itemStyle: {
+                    color: '#91cc75'
+                },
+                emphasis: {
+                    focus: 'series'
+                }
+            }
+        ]
+    };
+
+    efficiencyAnalysisOption && efficiencyAnalysisChart.setOption(efficiencyAnalysisOption);
+
+    // 4. 作者阅读收藏关系散点图
+    var readFlowerChartDom = document.getElementById('readFlowerChart');
+    var readFlowerChart = echarts.init(readFlowerChartDom);
+    var readFlowerOption;
+
+    var authorPoints = /*[[${readFlowerData.authorPoints}]]*/ [];
+
+    // 准备散点图数据
+    var maleScatterData = [];
+    var femaleScatterData = [];
+
+    authorPoints.forEach(function (point) {
+        var scatterPoint = {
+            name: point.author,
+            value: [point.totalRead, point.totalFlower, point.flowerRatio],
+            symbolSize: point.symbolSize || 10,
+            workCount: point.workCount,
+            flowerRatio: point.flowerRatio
+        };
+
+        if (point.channel === '男频') {
+            maleScatterData.push(scatterPoint);
+        } else {
+            femaleScatterData.push(scatterPoint);
+        }
+    });
+
+    readFlowerOption = {
+        title: {
+            left: 'center',
+            textStyle: {
+                color: '#fff',
+                fontSize: 18
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                var point = params.data;
+                return '作者: ' + params.name + '<br/>' +
+                    '总阅读量: ' + point.value[0].toLocaleString() + '<br/>' +
+                    '总收藏量: ' + point.value[1].toLocaleString() + '<br/>' +
+                    '收藏率: ' + point.value[2].toFixed(2) + '‰<br/>' +
+                    '作品数量: ' + point.workCount;
+            }
+        },
+        legend: {
+            data: ['男频', '女频'],
+            textStyle: {
+                color: '#9a9a9a'
+            },
+            top: 30
+        },
+        grid: {
+            left: '3%',
+            right: '7%',
+            bottom: '5%',
+            top: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'log',
+            name: '总阅读量(对数)',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            nameLocation: 'middle',
+            nameGap: 30,
+            axisLabel: {
+                color: '#9a9a9a',
+                formatter: function (value) {
+                    if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+                    if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
+                    return value;
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#9a9a9a'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        yAxis: {
+            type: 'log',
+            name: '总收藏量(对数)',
+            nameTextStyle: {
+                color: '#9a9a9a'
+            },
+            nameLocation: 'middle',
+            nameGap: 50,
+            axisLabel: {
+                color: '#9a9a9a',
+                formatter: function (value) {
+                    if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+                    if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
+                    return value;
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#9a9a9a'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            }
+        },
+        visualMap: {
+            show: false,
+            dimension: 2,
+            min: Math.min(...authorPoints.map(p => p.flowerRatio || 0)),
+            max: Math.max(...authorPoints.map(p => p.flowerRatio || 0)),
+            inRange: {
+                color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+            }
+        },
+        series: [
+            {
+                name: '男频',
+                type: 'scatter',
+                data: maleScatterData,
+                symbolSize: function (data) {
+                    return data.symbolSize;
+                },
+                itemStyle: {
+                    color: '#5470c6',
+                    opacity: 0.8
+                },
+                emphasis: {
+                    focus: 'self'
+                }
+            },
+            {
+                name: '女频',
+                type: 'scatter',
+                data: femaleScatterData,
+                symbolSize: function (data) {
+                    return data.symbolSize;
+                },
+                itemStyle: {
+                    color: '#91cc75',
+                    opacity: 0.8
+                },
+                emphasis: {
+                    focus: 'self'
+                }
+            }
+        ]
+    };
+
+    readFlowerOption && readFlowerChart.setOption(readFlowerOption);
+
+    // 5. 高产作者TOP榜表格数据填充
+    var topAuthorsData = /*[[${topAuthorsData.topAuthors}]]*/ [];
+    var authorsTableBody = document.querySelector('#authorsTable tbody');
+
+    if (authorsTableBody && topAuthorsData.length > 0) {
+        authorsTableBody.innerHTML = '';
+        topAuthorsData.forEach(function (author) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+          <td>${author.rank}</td>
+          <td>${author.author}</td>
+          <td>
+            <span class="badge ${author.channel === '男频' ? 'badge-primary' : 'badge-success'}">
+              ${author.channel}
+            </span>
+          </td>
+          <td>${author.workCount}</td>
+          <td>${author.totalRead ? author.totalRead.toLocaleString() : 0}</td>
+          <td>${author.totalFlower ? author.totalFlower.toLocaleString() : 0}</td>
+        `;
+            authorsTableBody.appendChild(row);
+        });
+    } else if (authorsTableBody) {
+        authorsTableBody.innerHTML = '<tr><td colspan="6" class="text-center">暂无数据</td></tr>';
+    }
+
+    // 响应窗口大小变化，重新调整图表大小
+    window.addEventListener('resize', function () {
+        levelDistributionChart.resize();
+        channelComparisonChart.resize();
+        efficiencyAnalysisChart.resize();
+        readFlowerChart.resize();
+        myChartA.resize();
+        myChartB.resize();
+    });
     /*]]>*/
-  </script>
+</script>
 
 </body>
 </html>

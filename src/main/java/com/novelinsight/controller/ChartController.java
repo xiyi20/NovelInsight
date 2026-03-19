@@ -4,7 +4,6 @@ import com.novelinsight.model.User;
 import com.novelinsight.service.ChartDataService;
 import com.novelinsight.service.PublicDataService;
 import com.novelinsight.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -36,13 +35,18 @@ public class ChartController {
 
     /**
      * 类型图表页面（对应typeChart视图）
+     * 现在合并了主题分析功能
      */
     @GetMapping("/typeChart")
-    public String typeChart(@AuthenticationPrincipal UserDetails userDetails, Model model, HttpServletRequest request) {
+    public String typeChart(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
 
+        // 获取类型图表数据
         var chartData = chartDataService.getTypeChartData();
+
+        // 获取主题分析数据
+        var themeChartData = chartDataService.getThemeAnalysisChartData();
 
         model.addAttribute("userInfo", user);
         model.addAttribute("xLine1", chartData.get("xLine1"));
@@ -51,6 +55,12 @@ public class ChartController {
         model.addAttribute("xBar1", chartData.get("xBar1"));
         model.addAttribute("yBar1", chartData.get("yBar1"));
         model.addAttribute("pieData1", chartData.get("pieData1"));
+
+        // 添加主题分析数据
+        model.addAttribute("marketData", themeChartData.get("themeMarketData"));
+        model.addAttribute("popularityData", themeChartData.get("themePopularityData"));
+        model.addAttribute("wordLengthData", themeChartData.get("wordLengthData"));
+
         model.addAttribute("currentPage", "typeChart");
 
         return "typeChart";
@@ -62,7 +72,7 @@ public class ChartController {
     @GetMapping("/infoChart")
     public String infoChart(@AuthenticationPrincipal UserDetails userDetails,
                            @RequestParam(required = false) String typeName,
-                           Model model, HttpServletRequest request) {
+                            Model model) {
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
 
@@ -95,7 +105,7 @@ public class ChartController {
      * 时间图表页面（对应timeChart视图）
      */
     @GetMapping("/timeChart")
-    public String timeChart(@AuthenticationPrincipal UserDetails userDetails, Model model, HttpServletRequest request) {
+    public String timeChart(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
 
@@ -119,7 +129,7 @@ public class ChartController {
      */
     @GetMapping("/novelCloud")
     public String novelCloud(@AuthenticationPrincipal UserDetails userDetails,
-                           @RequestParam(required = false, defaultValue = "type") String dataType,
+                             @RequestParam(required = false, defaultValue = "title") String dataType,
                            Model model) {
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
@@ -156,18 +166,52 @@ public class ChartController {
      * 作者图表页面（对应authorChart视图）
      */
     @GetMapping("/authorChart")
-    public String authorChart(@AuthenticationPrincipal UserDetails userDetails, Model model, HttpServletRequest request) {
+    public String authorChart(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
 
+        // 获取原有作者图表数据
         var chartData = chartDataService.getAuthorChartData();
+
+        // 获取新的作者分析数据
+        var authorAnalysisData = chartDataService.getAuthorAnalysisChartData();
 
         model.addAttribute("userInfo", user);
         model.addAttribute("xLine1", chartData.get("xLine1"));
         model.addAttribute("yLine1", chartData.get("yLine1"));
         model.addAttribute("pieData", chartData.get("pieData"));
+
+        // 添加作者分析数据
+        model.addAttribute("levelDistributionData", authorAnalysisData.get("levelDistributionData"));
+        model.addAttribute("channelComparisonData", authorAnalysisData.get("channelComparisonData"));
+        model.addAttribute("efficiencyAnalysisData", authorAnalysisData.get("efficiencyAnalysisData"));
+        model.addAttribute("productivityData", authorAnalysisData.get("productivityData"));
+        model.addAttribute("readFlowerData", authorAnalysisData.get("readFlowerData"));
+        model.addAttribute("topAuthorsData", authorAnalysisData.get("topAuthorsData"));
+
         model.addAttribute("currentPage", "authorChart");
 
         return "authorChart";
     }
+
+    /**
+     * 频道对比分析页面
+     */
+    @GetMapping("/channelChart")
+    public String channelChart(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String username = userDetails.getUsername();
+        User user = userService.findByUsername(username);
+
+        // 获取频道对比数据
+        var chartData = chartDataService.getChannelComparisonChartData();
+
+        model.addAttribute("userInfo", user);
+        model.addAttribute("currentPage", "channelChart");
+        model.addAttribute("themeData", chartData.get("channelThemeData"));
+        model.addAttribute("flowerData", chartData.get("flowerTrendData"));
+        model.addAttribute("metricsData", chartData.get("channelMetrics"));
+
+        return "channelChart";
+    }
+
 }

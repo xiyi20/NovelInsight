@@ -76,6 +76,7 @@
 
                                 <div class="form-group mr-2">
                                     <select class="form-control" name="typeFilter">
+                                        <option th:selected="${typeFilter == ''}" value="">默认</option>
                                         <option th:selected="${typeFilter == '都市言情'}" value="都市言情">都市言情</option>
                                         <option th:selected="${typeFilter == '军事历史'}" value="军事历史">军事历史</option>
                                         <option th:selected="${typeFilter == '青春校园'}" value="青春校园">青春校园</option>
@@ -87,6 +88,7 @@
 
                                 <div class="form-group mr-2">
                                     <select class="form-control" name="sortField">
+                                        <option th:selected="${sortField == ''}" value="">默认</option>
                                         <option th:selected="${sortField == 'allRead'}" value="allRead">阅读量</option>
                                         <option th:selected="${sortField == 'allFlower'}" value="allFlower">收藏量</option>
                                         <option th:selected="${sortField == 'reward'}" value="reward">打赏</option>

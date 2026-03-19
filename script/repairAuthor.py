@@ -7,23 +7,23 @@ from lxml import etree
 from pymysql import *
 
 
-def repair():
+def get_repair():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
     }
     conn = connect(host='node1', user='root', password='123456', database='bigdata', port=3306)
     cursor = conn.cursor()
 
-    cursor.execute('select * from novelData where author like "%�%"')
+    cursor.execute('select * from novelData where author like "%--%"')
     results = cursor.fetchall()
 
-    if not os.path.exists('./author.csv'):
-        with open('./author.csv', 'a', newline='', encoding='utf-8') as wf:
+    if not os.path.exists('./author1.csv'):
+        with open('./author1.csv', 'a', newline='', encoding='utf-8') as wf:
             write = csv.writer(wf)
             write.writerow(['id', 'author', 'oldAuthor'])
 
     def save_to_csv(result):
-        with open('./author.csv', 'a', newline='', encoding='utf-8') as f:
+        with open('./author1.csv', 'a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(result)
 
@@ -46,7 +46,7 @@ def repair():
 def update():
     conn = connect(host='node1', user='root', password='123456', database='bigdata', port=3306)
     cursor = conn.cursor()
-    with open('./author.csv', 'r', encoding='utf-8-sig') as f:
+    with open('./author1.csv', 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
             sql = "UPDATE novelData SET author = %s WHERE id = %s"
