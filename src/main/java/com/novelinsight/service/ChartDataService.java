@@ -711,21 +711,6 @@ public class ChartDataService {
     }
 
     /**
-     * 获取主题市场表现图表数据
-     */
-    public Map<String, Object> getThemeMarketPerformanceData() {
-        try {
-            List<Object[]> marketPerformance = publicDataService.getThemeMarketPerformance();
-            if (marketPerformance.isEmpty()) {
-                return getDefaultThemeMarketPerformanceData();
-            }
-            return formatThemeMarketPerformanceData(marketPerformance);
-        } catch (Exception e) {
-            return getDefaultThemeMarketPerformanceData();
-        }
-    }
-
-    /**
      * 获取主题受欢迎程度图表数据
      */
     public Map<String, Object> getThemePopularityData() {

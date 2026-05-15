@@ -65,8 +65,8 @@ class spider(object):
         updateTime = e.xpath('//div[@class="T-L-O-Zuo"]/div[1]/span[@class="fs14 colorQianHui"]/span/text()')[0][:10]
         print(type, title, cover, author, authorImg, authorWork, authorWords, authorDays, monthRead, monthFlower,
               allRead, allFlower, wordNum, updateTicket, reward, monthTicket, shareNum, rate, startTime, updateTime, detailUrl)
-        self.save_to_csv([type, title, cover, author, authorImg, authorWork, authorWords, authorDays, monthRead, monthFlower,
-              allRead, allFlower, wordNum, updateTicket, reward, monthTicket, shareNum, rate, startTime, updateTime, detailUrl])
+        # self.save_to_csv([type, title, cover, author, authorImg, authorWork, authorWords, authorDays, monthRead, monthFlower,
+        #       allRead, allFlower, wordNum, updateTicket, reward, monthTicket, shareNum, rate, startTime, updateTime, detailUrl])
 
 if __name__ == '__main__':
     # spiderObj2 = spider()

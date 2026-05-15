@@ -98,6 +98,7 @@ if __name__ == '__main__':
     mysql_df = spark.read.format("jdbc").option("url", JDBC_URL).option("dbtable", "novelData").options(
         **JDBC_PROPS).load()
     mysql_df.write.mode("overwrite").saveAsTable("novelData", "parquet")
+
     # -------------------------------
     # author_window = Window.partitionBy("author").orderBy(F.col("allRead").desc())
     #

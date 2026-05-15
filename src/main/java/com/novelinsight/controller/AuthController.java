@@ -28,7 +28,7 @@ public class AuthController {
         // 如果用户已登录，重定向到首页
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("username") != null) {
-            return "redirect:/app/index";
+            return "redirect:/app";
         }
 
         // 检查Spring Security认证异常

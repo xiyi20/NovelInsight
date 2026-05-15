@@ -228,7 +228,7 @@ python spiderDetail.py
 ### 3. 导入数据到 Hive
 
 ```bash
-python sparkFir.py
+python sparkIni.py
 ```
 
 ### 4. 运行数据分析

@@ -72,11 +72,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, authentication) -> {
-            // 在session中存储用户名，保持与Django兼容
             request.getSession().setAttribute("username", authentication.getName());
 
             // 登录成功后重定向到首页
-            response.sendRedirect("/app/index");
+            response.sendRedirect("/app");
         };
     }
 }
